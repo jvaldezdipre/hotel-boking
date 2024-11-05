@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail, isValidPassword } from "../../utils/validation";
 
@@ -14,9 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const [errMsg, setErrmsg] = useState("");
-
-  useEffect(() => {});
+  // const [errMsg, setErrmsg] = useState("");
 
   const inputHandler = (event) => {
     switch (event.target.name) {
@@ -36,14 +34,11 @@ const Login = () => {
 
     let formError = false;
 
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(email) || !isValidPassword(password)) {
       formError = true;
       setError(true);
-    }
-
-    if (!isValidPassword(password)) {
-      formError = true;
-      setError(true);
+      // setErrmsg("Invalid email or password");
+      // console.log(errMsg);
     }
 
     if (!formError) {
@@ -57,10 +52,11 @@ const Login = () => {
           navigate("/reservations");
           setEmail("");
           setPassword("");
+          console.log("logged in!");
         }
       } catch (err) {
-        setError(true);
-        setErrmsg("Login failed. Please check your credentials.");
+        // setErrmsg(err);
+        console.log(err);
       }
     }
   };
@@ -72,6 +68,7 @@ const Login = () => {
         btnClass="login-btn"
         text="Login"
         error={error}
+        errorMsg="Invalid email or password"
         onSubmit={submitHandler}
       >
         <Input
