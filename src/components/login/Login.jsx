@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { isValidEmail, isValidPassword } from "../../utils/validation";
 
 import Form from "../form/Form";
 import Input from "../input/Input";
+import axios from "../../api/axios";
+
+import { LOGIN_URL } from "../../api/endpoints";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [errMsg, setErrmsg] = useState("");
+
+  useEffect(() => {});
 
   const inputHandler = (event) => {
     switch (event.target.name) {
@@ -22,9 +31,9 @@ const Login = () => {
     }
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    // variable to track if our form is valid
+
     let formError = false;
 
     if (!isValidEmail(email)) {
@@ -38,10 +47,22 @@ const Login = () => {
     }
 
     if (!formError) {
-      setEmail("");
-      setPassword("");
+      try {
+        const response = await axios.post(LOGIN_URL, {
+          email,
+          password,
+        });
+
+        if (response.status === 200) {
+          navigate("/reservations");
+          setEmail("");
+          setPassword("");
+        }
+      } catch (err) {
+        setError(true);
+        setErrmsg("Login failed. Please check your credentials.");
+      }
     }
-    console.log(formError);
   };
 
   return (
