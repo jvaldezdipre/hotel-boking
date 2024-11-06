@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 import { isValidEmail, isValidPassword } from "../../utils/validation";
 import { LOGIN_URL } from "../../api/endpoints";
@@ -9,7 +8,7 @@ import Form from "../form/Form";
 import Input from "../input/Input";
 import axios from "../../api/axios";
 
-const Login = () => {
+const Login = ({ loginHandler, userRoleHandler }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -37,8 +36,6 @@ const Login = () => {
     if (!isValidEmail(email) || !isValidPassword(password)) {
       formError = true;
       setError(true);
-      // setErrmsg("Invalid email or password");
-      // console.log(errMsg);
     }
 
     if (!formError) {
@@ -49,16 +46,15 @@ const Login = () => {
         });
 
         if (response.status === 200) {
-          navigate("/reservations");
           const token = response.data.token;
           sessionStorage.setItem("token", token);
+          loginHandler();
+          userRoleHandler(token);
+          navigate("/reservations");
 
           setEmail("");
           setPassword("");
           console.log("logged in!");
-          //I need to take this token and store it
-          console.log(token);
-          console.log(jwtDecode(token));
         }
       } catch (err) {
         console.log(err);
