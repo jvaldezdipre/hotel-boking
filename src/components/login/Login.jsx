@@ -51,16 +51,17 @@ const Login = () => {
 
         if (response.status === 200) {
           navigate("/reservations");
+          const token = response.data.token;
+          sessionStorage.setItem("token", token);
+
           setEmail("");
           setPassword("");
           console.log("logged in!");
-          const token = response.data.token;
           //I need to take this token and store it
           console.log(token);
           console.log(jwtDecode(token));
         }
       } catch (err) {
-        // setErrmsg(err);
         console.log(err);
       }
     }
