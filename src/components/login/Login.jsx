@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 import { isValidEmail, isValidPassword } from "../../utils/validation";
+import { LOGIN_URL } from "../../api/endpoints";
 
 import Form from "../form/Form";
 import Input from "../input/Input";
 import axios from "../../api/axios";
-
-import { LOGIN_URL } from "../../api/endpoints";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -53,6 +54,10 @@ const Login = () => {
           setEmail("");
           setPassword("");
           console.log("logged in!");
+          const token = response.data.token;
+          //I need to take this token and store it
+          console.log(token);
+          console.log(jwtDecode(token));
         }
       } catch (err) {
         // setErrmsg(err);
