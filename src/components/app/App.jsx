@@ -8,6 +8,7 @@ import Reservations from "../reservations/Reservation";
 import "./App.css";
 import NavBar from "../nav-bar/NavBar";
 import RoomTypes from "../room-types/RoomTypes";
+import Logout from "../logout/Logout";
 
 const App = () => {
   const token = sessionStorage.getItem("token");
@@ -25,12 +26,19 @@ const App = () => {
     setLoading(false);
   }, [token]);
 
+  const userRoleHandler = (decodedToken) => {
+    setUserRole(jwtDecode(decodedToken).roles);
+  };
+
   const loginHandler = () => {
     setLoggedIn(true);
   };
 
-  const userRoleHandler = (decodedToken) => {
-    setUserRole(jwtDecode(decodedToken).roles);
+  const logoutHandler = () => {
+    //getting a warning here with state
+    loggedIn && setLoggedIn(false);
+    sessionStorage.removeItem("token");
+    console.log("I have been logged out", token);
   };
 
   return (
@@ -45,10 +53,7 @@ const App = () => {
           <Route
             path="/"
             element={
-              <Login
-                loginHandler={loginHandler}
-                userRoleHandler={userRoleHandler}
-              />
+              <Login login={loginHandler} userRoleHandler={userRoleHandler} />
             }
           />
           <Route
@@ -68,6 +73,14 @@ const App = () => {
                 roleRequired="manager"
               >
                 <RoomTypes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="logout"
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Logout logout={logoutHandler} />
               </ProtectedRoute>
             }
           />

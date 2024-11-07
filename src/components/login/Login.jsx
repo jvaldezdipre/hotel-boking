@@ -8,7 +8,7 @@ import Form from "../form/Form";
 import Input from "../input/Input";
 import axios from "../../api/axios";
 
-const Login = ({ loginHandler, userRoleHandler }) => {
+const Login = ({ login, userRoleHandler }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -48,7 +48,7 @@ const Login = ({ loginHandler, userRoleHandler }) => {
         if (response.status === 200) {
           const token = response.data.token;
           sessionStorage.setItem("token", token);
-          loginHandler();
+          login();
           userRoleHandler(token);
           navigate("/reservations");
 
