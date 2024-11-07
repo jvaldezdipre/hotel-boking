@@ -1,4 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
+import "./NavBar.css";
 
 const NavBar = ({ loggedIn, role }) => {
   return (
@@ -11,19 +12,42 @@ const NavBar = ({ loggedIn, role }) => {
             {role === "manager" ? (
               <>
                 <li>
-                  <NavLink to="/reservations">Reservations</NavLink>
+                  <NavLink
+                    to="/reservations"
+                    className={({ isActive }) =>
+                      isActive ? "link active" : "link"
+                    }
+                  >
+                    Reservations
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/room-types">Room Types</NavLink>
+                  <NavLink
+                    to="/room-types"
+                    className={({ isActive }) =>
+                      isActive ? "link active" : "link"
+                    }
+                  >
+                    Room Types
+                  </NavLink>
                 </li>
               </>
             ) : (
               <li>
-                <NavLink to="/reservations">Reservations</NavLink>
+                <NavLink
+                  to="/reservations"
+                  className={({ isActive }) =>
+                    isActive ? "link active" : "link"
+                  }
+                >
+                  Reservations
+                </NavLink>
               </li>
             )}
             <li>
-              <Link to="/logout">Logout</Link>
+              <Link to="/logout" className="link">
+                Logout
+              </Link>
             </li>
           </>
         )}

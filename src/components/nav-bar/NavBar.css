@@ -1,0 +1,13 @@
+li {
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color: red;
+  text-decoration: none;
+}
