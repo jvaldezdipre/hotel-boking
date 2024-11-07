@@ -6,8 +6,8 @@ const NavBar = ({ loggedIn, role }) => {
       <h3>Hotel Bookings</h3>
 
       <ul className="nav-links-container">
-        {(loggedIn && role === "employee") ||
-          (role === "manager" && (
+        {/* {(loggedIn && role === "employee") ||
+          (loggedIn && role === "manager" && (
             <>
               <li>
                 <NavLink to="/reservations">Reservations</NavLink>
@@ -21,7 +21,28 @@ const NavBar = ({ loggedIn, role }) => {
                 <Link to="/logout">Logout</Link>
               </li>
             </>
-          ))}
+          ))} */}
+        {loggedIn && (
+          <>
+            {role === "manager" ? (
+              <>
+                <li>
+                  <NavLink to="/reservations">Reservations</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/room-types">Room Types</NavLink>
+                </li>
+              </>
+            ) : (
+              <li>
+                <NavLink to="/reservations">Reservations</NavLink>
+              </li>
+            )}
+            <li>
+              <Link to="/logout">Logout</Link>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
