@@ -7,22 +7,23 @@ import ProtectedRoute from "../protected-route/ProtectedRoute";
 import Reservations from "../reservations/Reservation";
 import "./App.css";
 import NavBar from "../nav-bar/NavBar";
+import RoomTypes from "../room-types/RoomTypes";
 
 const App = () => {
   const token = sessionStorage.getItem("token");
 
   const [loggedIn, setLoggedIn] = useState(token ? true : false);
   const [userRole, setUserRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (token) {
       const role = jwtDecode(token).roles;
-      setLoggedIn(true);
       setUserRole(role);
-      console.log(role);
-      console.log(loggedIn);
+      loginHandler();
     }
-  }, []);
+    setLoading(false);
+  }, [token]);
 
   const loginHandler = () => {
     setLoggedIn(true);
@@ -35,25 +36,43 @@ const App = () => {
   return (
     <BrowserRouter>
       <NavBar loggedIn={loggedIn} role={userRole} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Login
-              loginHandler={loginHandler}
-              userRoleHandler={userRoleHandler}
-            />
-          }
-        />
-        <Route
-          path="/reservations"
-          element={
-            <ProtectedRoute loggedIn={loggedIn} role={userRole}>
-              <Reservations />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      {loading ? (
+        <div>
+          <h1>loading...</h1>
+        </div>
+      ) : (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Login
+                loginHandler={loginHandler}
+                userRoleHandler={userRoleHandler}
+              />
+            }
+          />
+          <Route
+            path="/reservations"
+            element={
+              <ProtectedRoute loggedIn={loggedIn} role={userRole}>
+                <Reservations />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="room-types"
+            element={
+              <ProtectedRoute
+                loggedIn={loggedIn}
+                role={userRole}
+                roleRequired="manager"
+              >
+                <RoomTypes />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </BrowserRouter>
   );
 };
