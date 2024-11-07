@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 import Login from "../login/Login";
 import ProtectedRoute from "../protected-route/ProtectedRoute";
-import Reservations from "../reservations/Reservation";
+import Reservations from "../reservations/Reservations";
 import "./App.css";
 import NavBar from "../nav-bar/NavBar";
 import RoomTypes from "../room-types/RoomTypes";
