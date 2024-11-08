@@ -39,26 +39,25 @@ const Login = ({ login, userRoleHandler }) => {
     }
 
     if (!formError) {
-      try {
-        const response = await axios.post(LOGIN_URL, {
-          email,
-          password,
+      axios
+        .post(LOGIN_URL, { email, password })
+        .then((response) => {
+          if (response.status === 200) {
+            const token = response.data.token;
+            sessionStorage.setItem("token", token);
+            login();
+            userRoleHandler(token);
+
+            navigate("/reservations");
+
+            setEmail("");
+            setPassword("");
+            console.log("logged in!");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-
-        if (response.status === 200) {
-          const token = response.data.token;
-          sessionStorage.setItem("token", token);
-          login();
-          userRoleHandler(token);
-          navigate("/reservations");
-
-          setEmail("");
-          setPassword("");
-          console.log("logged in!");
-        }
-      } catch (err) {
-        console.log(err);
-      }
     }
   };
 

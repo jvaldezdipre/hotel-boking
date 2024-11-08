@@ -6,27 +6,37 @@ import { config } from "../../api/config";
 const Reservations = () => {
   //state to hold the array of rervations it will be an array of objects
   const [reservations, setReservation] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    //state is being added but for somereason when it takes me
-    // to the reservation page i have to reload the page to get the reservations
-    const fetchReservations = async () => {
-      try {
-        const response = await axios.get(RESERVATIONS, config);
-        console.log(response.data);
-        //state is saving the reservation
-        setReservation(response.data);
-      } catch (err) {
-        console.log(err);
-      }
+    const fetchReservations = () => {
+      axios
+        .get(RESERVATIONS, config())
+        .then((response) => {
+          console.log(response.data);
+          setReservation(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     };
     fetchReservations();
   }, []);
 
   return (
-    <div>
-      <h1>Reservations</h1>
-    </div>
+    <>
+      {loading ? (
+        <div>
+          <h1>loading...</h1>
+        </div>
+      ) : (
+        <div>
+          <h1>Reservations</h1>
+        </div>
+      )}
+    </>
   );
 };
 
