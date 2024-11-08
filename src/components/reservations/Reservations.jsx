@@ -34,7 +34,8 @@ const Reservations = () => {
         </div>
       ) : (
         <div>
-          <h1>Reservations</h1>
+          <h1>All Reservations</h1>
+          <button className="create-btn">Create</button>
           <div>
             {reservations.map((reservation) => (
               <ReservationCard key={reservation.id} reservation={reservation} />
