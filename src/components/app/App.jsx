@@ -34,14 +34,13 @@ const App = () => {
     setLoggedIn(true);
   };
 
-  const loadingHandler = (condition) => {
-    setLoading(condition);
-  };
+  // const loadingHandler = (condition) => {
+  //   setLoading(condition);
+  // };
 
   const logoutHandler = () => {
     loggedIn && setLoggedIn(false);
     sessionStorage.removeItem("token");
-    console.log("I have been logged out", token);
   };
 
   return (
