@@ -3,11 +3,14 @@ import axios from "../../api/axios";
 import { RESERVATIONS } from "../../api/endpoints";
 import { config } from "../../api/config";
 import ReservationCard from "./ReservationCard";
+import { useNavigate } from "react-router-dom";
 
 const Reservations = () => {
   //state to hold the array of rervations it will be an array of objects
   const [reservations, setReservation] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchReservations = () => {
@@ -26,6 +29,10 @@ const Reservations = () => {
     fetchReservations();
   }, []);
 
+  const createHandler = () => {
+    navigate("/create");
+  };
+
   return (
     <>
       {loading ? (
@@ -35,7 +42,9 @@ const Reservations = () => {
       ) : (
         <div>
           <h1>All Reservations</h1>
-          <button className="create-btn">Create</button>
+          <button className="create-btn" onClick={createHandler}>
+            Create
+          </button>
           <div>
             {reservations.map((reservation) => (
               <ReservationCard key={reservation.id} reservation={reservation} />
