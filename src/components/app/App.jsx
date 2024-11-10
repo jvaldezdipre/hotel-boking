@@ -10,6 +10,7 @@ import NavBar from "../nav-bar/NavBar";
 import RoomTypes from "../room-types/RoomTypes";
 import Logout from "../logout/Logout";
 import Create from "../create/Create";
+import Edit from "../edit/Edit";
 
 const App = () => {
   const token = sessionStorage.getItem("token");
@@ -92,6 +93,15 @@ const App = () => {
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>
                 <Create />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            // where i left of
+            path="reservations/edit/:id"
+            element={
+              <ProtectedRoute loggedIn={loggedIn} role={userRole}>
+                <Edit />
               </ProtectedRoute>
             }
           />
