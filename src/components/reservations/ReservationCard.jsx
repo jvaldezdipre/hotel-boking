@@ -1,4 +1,9 @@
-const ReservationCard = ({ reservation, roomType, onClickEdit }) => {
+const ReservationCard = ({
+  reservation,
+  roomType,
+  onClickEdit,
+  onClickDelete,
+}) => {
   return (
     <div className="reservation-card">
       <p>Guest Email: {reservation.guestEmail}</p>
@@ -7,7 +12,7 @@ const ReservationCard = ({ reservation, roomType, onClickEdit }) => {
       <p>Number of Nights: {reservation.numberOfNights}</p>
       <p>Total Cost: {reservation.numberOfNights * roomType.rate}</p>
       <button onClick={onClickEdit}>edit</button>
-      <button>delete</button>
+      <button onClick={onClickDelete}>delete</button>
     </div>
   );
 };

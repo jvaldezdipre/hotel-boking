@@ -98,7 +98,7 @@ const App = () => {
           />
           <Route
             // where i left of
-            path="reservations/edit/:id"
+            path="/reservations/edit/:id"
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>
                 <Edit />

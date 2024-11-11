@@ -49,8 +49,23 @@ const Reservations = () => {
     navigate("/create");
   };
 
-  const editHandler = () => {
-    navigate("/edit/:id");
+  const editHandler = (id) => {
+    navigate(`/${RESERVATIONS}/edit/${id}`);
+  };
+
+  const deleteHandler = (id) => {
+    console.log(id);
+    console.log("I have been clicked");
+    axios
+      .delete(`${RESERVATIONS}/${id}`, config())
+      .then(() => {
+        setReservations((prevReservations) =>
+          prevReservations.filter((reservation) => reservation.id !== id)
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -73,7 +88,8 @@ const Reservations = () => {
                 roomType={roomTypes.find(
                   (type) => type.id === reservation.roomTypeId
                 )}
-                onClickEdit={editHandler}
+                onClickEdit={() => editHandler(reservation.id)}
+                onClickDelete={() => deleteHandler(reservation.id)}
               />
             ))}
           </div>
