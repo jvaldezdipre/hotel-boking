@@ -70,6 +70,7 @@ const Login = ({ login, userRoleHandler }) => {
         error={error}
         errorMsg="Invalid email or password"
         onSubmit={submitHandler}
+        noValidate
       >
         <Input
           name="Email"
