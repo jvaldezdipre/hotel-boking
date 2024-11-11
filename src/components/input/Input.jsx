@@ -1,5 +1,5 @@
 const Input = (props) => {
-  const { error, name, type, value, onChange } = props;
+  const { error, errorMsg, name, type, value, onChange } = props;
 
   return (
     <div className="input-container">
@@ -14,7 +14,7 @@ const Input = (props) => {
         id={name}
         onChange={onChange}
       />
-      {error && <p className="err-message">{error}</p>}
+      {error && <p className="err-message">{errorMsg}</p>}
     </div>
   );
 };
