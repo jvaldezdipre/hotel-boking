@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "../../api/axios";
 import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { config } from "../../api/config";
+
 import ReservationCard from "./ReservationCard";
-import { useNavigate } from "react-router-dom";
 
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);
@@ -46,16 +48,16 @@ const Reservations = () => {
   }, []);
 
   const createHandler = () => {
-    navigate("/create");
+    //Issue with button rendering in the create component when is not suposed to be there
+    console.log(RESERVATIONS);
+    navigate(`${RESERVATIONS}/create`);
   };
 
   const editHandler = (id) => {
-    navigate(`/${RESERVATIONS}/edit/${id}`);
+    navigate(`${RESERVATIONS}/edit/${id}`);
   };
 
   const deleteHandler = (id) => {
-    console.log(id);
-    console.log("I have been clicked");
     axios
       .delete(`${RESERVATIONS}/${id}`, config())
       .then(() => {

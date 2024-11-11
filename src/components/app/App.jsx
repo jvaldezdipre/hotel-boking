@@ -69,7 +69,7 @@ const App = () => {
             }
           />
           <Route
-            path="room-types"
+            path="/room-types"
             element={
               <ProtectedRoute
                 loggedIn={loggedIn}
@@ -81,7 +81,7 @@ const App = () => {
             }
           />
           <Route
-            path="logout"
+            path="/logout"
             element={
               <ProtectedRoute loggedIn={loggedIn}>
                 <Logout logout={logoutHandler} />
@@ -89,7 +89,7 @@ const App = () => {
             }
           />
           <Route
-            path="/create"
+            path="/reservations/create"
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>
                 <Create />
@@ -97,7 +97,6 @@ const App = () => {
             }
           />
           <Route
-            // where i left of
             path="/reservations/edit/:id"
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>

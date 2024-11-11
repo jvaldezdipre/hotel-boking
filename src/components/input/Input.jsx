@@ -1,5 +1,4 @@
 const Input = (props) => {
-  //might need to pass error message on the form for the login
   const { error, errMsg, name, type, value, onChange } = props;
 
   return (
