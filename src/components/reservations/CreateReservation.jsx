@@ -32,7 +32,7 @@ const Create = ({ user }) => {
     errorMsg: "Number of nights must be greater than 0",
   });
 
-  const [roomTypeId, setRoomTypeId] = useState({
+  const [roomType, setRoomType] = useState({
     value: 0,
     error: false,
     errorMsg: "Must select a room type",
@@ -57,7 +57,7 @@ const Create = ({ user }) => {
         setNumberOfNights({ ...numberOfNights, value: value, error: false });
         break;
       case "Room Type":
-        setRoomTypeId({ ...roomTypeId, value: value, error: false });
+        setRoomType({ ...roomType, value: value, error: false });
         break;
       default:
         break;
@@ -84,9 +84,9 @@ const Create = ({ user }) => {
       setNumberOfNights({ ...numberOfNights, error: true });
     }
 
-    if (roomTypeId.value === 0) {
+    if (roomType.value === 0) {
       formError = true;
-      setRoomTypeId({ ...roomTypeId, error: true });
+      setRoomType({ ...roomType, error: true });
     }
 
     if (!formError) {
@@ -96,7 +96,7 @@ const Create = ({ user }) => {
           {
             user: user,
             guestEmail: guestEmail.value,
-            roomTypeId: Number(roomTypeId.value),
+            roomTypeId: Number(roomType.value),
             checkInDate: checkInDate.value,
             numberOfNights: Number(numberOfNights.value),
           },
@@ -108,7 +108,7 @@ const Create = ({ user }) => {
           setGuestEmail({ ...guestEmail, error: false });
           setCheckInDate({ ...checkInDate, error: false });
           setNumberOfNights({ ...numberOfNights, error: false });
-          setRoomTypeId({ ...roomTypeId, error: false });
+          setRoomType({ ...roomType, error: false });
         });
     }
   };
@@ -148,10 +148,10 @@ const Create = ({ user }) => {
         />
         <Select
           name="Room Type"
-          value={roomTypeId.value}
+          value={roomType.value}
           onChange={inputHandler}
-          error={roomTypeId.error}
-          errorMsg={roomTypeId.errorMsg}
+          error={roomType.error}
+          errorMsg={roomType.errorMsg}
           roomTypes={roomTypes}
         />
       </Form>

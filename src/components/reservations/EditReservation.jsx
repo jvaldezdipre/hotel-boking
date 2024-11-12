@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 const Edit = () => {
   const { id } = useParams();
   console.log(id);
-  //const [reservation, setReservation] = useState(null);
 
   const [roomTypes, setRoomTypes] = useState([]);
   const [guestEmail, setGuestEmail] = useState({
@@ -35,15 +34,32 @@ const Edit = () => {
     errorMsg: "Number of nights must be greater than 0",
   });
 
-  const [roomTypeId, setRoomTypeId] = useState({
+  const [roomType, setRoomType] = useState({
     value: 0,
     error: false,
     errorMsg: "Must select a room type",
   });
 
-  // useEffect(() => {
-  //   axios.
-  // })
+  useEffect(() => {
+    Promise.all([
+      axios.get(`${RESERVATIONS}/${id}`, config()),
+      axios.get(ROOM_TYPES, config()),
+    ]).then(([reservationResponse, roomTypesResponse]) => {
+      const reservation = reservationResponse.data;
+      setGuestEmail({ ...guestEmail, value: reservation.guestEmail });
+      setCheckInDate({ ...checkInDate, value: reservation.checkInDate });
+      setNumberOfNights({
+        ...numberOfNights,
+        value: reservation.numberOfNights,
+      });
+      setRoomType({ ...roomType, value: reservation.roomTypeId });
+      console.log(guestEmail.value);
+      console.log(reservation);
+
+      setRoomTypes(roomTypesResponse.data);
+      //setLoading(false);
+    });
+  }, [checkInDate, guestEmail, id, numberOfNights, roomType]);
 
   const inputHandler = (event) => {
     const { name, value } = event.target;
@@ -58,7 +74,7 @@ const Edit = () => {
         setNumberOfNights({ ...numberOfNights, value: value, error: false });
         break;
       case "Room Type":
-        setRoomTypeId({ ...roomTypeId, value: value, error: false });
+        setRoomType({ ...roomType, value: value, error: false });
         break;
       default:
         break;
@@ -85,9 +101,9 @@ const Edit = () => {
       setNumberOfNights({ ...numberOfNights, error: true });
     }
 
-    if (roomTypeId.value === 0) {
+    if (roomType.value === "Select Room Type") {
       formError = true;
-      setRoomTypeId({ ...roomTypeId, error: true });
+      setRoomType({ ...roomType, error: true });
     }
 
     if (!formError) {
@@ -148,10 +164,10 @@ const Edit = () => {
         />
         <Select
           name="Room Type"
-          value={roomTypeId.value}
+          value={roomType.value}
           onChange={inputHandler}
-          error={roomTypeId.error}
-          errorMsg={roomTypeId.errorMsg}
+          error={roomType.error}
+          errorMsg={roomType.errorMsg}
           roomTypes={roomTypes}
         />
       </Form>
