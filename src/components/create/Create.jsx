@@ -4,6 +4,7 @@ import Form from "../form/Form";
 import Input from "../input/Input";
 import Select from "../select/Select";
 import axios from "../../api/axios";
+
 import { config } from "../../api/config";
 import { isValidEmail, isValidDate } from "../../utils/validation";
 import { roomTypes } from "../../utils/roomTypes";
@@ -27,7 +28,11 @@ const Create = () => {
     error: false,
     errorMsg: "Number of nights must be greater than 0",
   });
-  const [roomType, setRoomType] = useState(1);
+  const [roomType, setRoomType] = useState({
+    value: "Select Room Type",
+    error: false,
+    errorMsg: "Must select a room type",
+  });
 
   const inputHandler = (event) => {
     const { name, value } = event.target;
@@ -39,10 +44,10 @@ const Create = () => {
         setCheckInDate({ ...checkInDate, value: value, error: false });
         break;
       case "Number of Nights":
-        setNumberOfNights(value);
+        setNumberOfNights({ ...numberOfNights, value: value, error: false });
         break;
       case "Room Type":
-        setRoomType(value);
+        setRoomType({ ...roomType, value: value, error: false });
         break;
       default:
         break;
@@ -66,9 +71,23 @@ const Create = () => {
       console.log("Date must be mm-dd-yyyy");
     }
 
+    if (numberOfNights.value <= 0) {
+      formError = true;
+      setNumberOfNights({ ...numberOfNights, error: true });
+      console.log("Number of nights must be greater than 0");
+    }
+
+    if (roomType.value === "Select Room Type") {
+      formError = true;
+      setRoomType({ ...roomType, error: true });
+      console.log("Must select a room type");
+    }
+
     if (!formError) {
       setGuestEmail({ ...guestEmail, error: false });
       setCheckInDate({ ...checkInDate, error: false });
+      setNumberOfNights({ ...numberOfNights, error: false });
+      setRoomType({ ...roomType, error: false });
       // axios
       //   .post(
       //     RESERVATIONS,
@@ -117,11 +136,14 @@ const Create = () => {
           value={numberOfNights.value}
           onChange={inputHandler}
           error={numberOfNights.error}
+          errorMsg={numberOfNights.errorMsg}
         />
         <Select
           name="Room Type"
-          value={roomType}
+          value={roomType.value}
           onChange={inputHandler}
+          error={roomType.error}
+          errorMsg={roomType.errorMsg}
           options={roomTypes}
         />
       </Form>

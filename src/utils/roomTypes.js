@@ -1,9 +1,10 @@
 export const roomTypes = [
-  { value: 1, label: "King" },
-  { value: 2, label: "King Double" },
-  { value: 3, label: "Executive Suite" },
-  { value: 4, label: "Honeymoon Suite" },
-  { value: 5, label: "Queen" },
-  { value: 6, label: "Queen Double" },
-  { value: 7, label: "Extended Stay" },
+  // { id: 0, name: "Select Room Type" },
+  { id: 1, name: "King" },
+  { id: 2, name: "King Double" },
+  { id: 3, name: "Executive Suite" },
+  { id: 4, name: "Honeymoon Suite" },
+  { id: 5, name: "Queen" },
+  { id: 6, name: "Queen Double" },
+  { id: 7, name: "Extended Stay" },
 ];
