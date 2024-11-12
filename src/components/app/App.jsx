@@ -27,7 +27,6 @@ const App = () => {
       const email = jwtDecode(token).sub;
       setUserRole(role);
       setUserEmail(email);
-      console.log(email);
       loginHandler();
     }
     setLoading(false);

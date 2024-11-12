@@ -8,7 +8,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import axios from "../../api/axios";
 
-const Login = ({ login, userRoleHandler }) => {
+const Login = ({ login }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -46,7 +46,6 @@ const Login = ({ login, userRoleHandler }) => {
             const token = response.data.token;
             sessionStorage.setItem("token", token);
             login();
-            userRoleHandler(token);
 
             navigate("/reservations");
 

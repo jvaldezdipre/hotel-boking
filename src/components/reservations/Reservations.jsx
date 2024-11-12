@@ -15,22 +15,6 @@ const Reservations = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //keeping this might move room type to app.jsx
-    // const fetchReservations = () => {
-    //   axios
-    //     .get(RESERVATIONS, config())
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       setReservations(response.data);
-    //       setLoading(false);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       setLoading(false);
-    //     });
-    // };
-    // fetchReservations();
-
     Promise.all([
       axios.get(RESERVATIONS, config()),
       axios.get(ROOM_TYPES, config()),
