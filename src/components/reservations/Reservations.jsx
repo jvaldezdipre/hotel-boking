@@ -38,7 +38,6 @@ const Reservations = () => {
       .then(([reservationsResponse, roomTypesResponse]) => {
         setReservations(reservationsResponse.data);
         setRoomTypes(roomTypesResponse.data);
-        console.log(roomTypesResponse.data);
         setLoading(false);
       })
       .catch((err) => {

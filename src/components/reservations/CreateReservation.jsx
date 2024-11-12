@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 import Form from "../form/Form";
-import Input from "../input/Input";
-import Select from "../select/Select";
+import Input from "../form/Input";
+import Select from "../form/Select";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
@@ -41,7 +41,6 @@ const Create = ({ user }) => {
   useEffect(() => {
     axios.get(ROOM_TYPES, config()).then((response) => {
       setRoomTypes(response.data);
-      console.log(response.data);
     });
   }, []);
 

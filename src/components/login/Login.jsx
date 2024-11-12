@@ -5,7 +5,7 @@ import { isValidEmail, isValidPassword } from "../../utils/validation";
 import { LOGIN_URL } from "../../api/endpoints";
 
 import Form from "../form/Form";
-import Input from "../input/Input";
+import Input from "../form/Input";
 import axios from "../../api/axios";
 
 const Login = ({ login, userRoleHandler }) => {
