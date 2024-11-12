@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Form from "../form/Form";
 import Input from "../input/Input";
@@ -6,16 +6,18 @@ import Select from "../select/Select";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
+import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
-import { roomTypes } from "../../utils/roomTypes";
-import { RESERVATIONS } from "../../api/endpoints";
+//import { roomTypes } from "../../utils/roomTypes";
 
 const Create = () => {
+  const [roomTypes, setRoomTypes] = useState([]);
   const [guestEmail, setGuestEmail] = useState({
     value: "",
     error: false,
     errorMsg: "Must be a valid email",
   });
+
   const [checkInDate, setCheckInDate] = useState({
     value: "",
     error: false,
@@ -28,11 +30,19 @@ const Create = () => {
     error: false,
     errorMsg: "Number of nights must be greater than 0",
   });
+
   const [roomType, setRoomType] = useState({
     value: "Select Room Type",
     error: false,
     errorMsg: "Must select a room type",
   });
+
+  useEffect(() => {
+    axios.get(ROOM_TYPES, config()).then((response) => {
+      setRoomTypes(response.data);
+      console.log(response.data);
+    });
+  }, []);
 
   const inputHandler = (event) => {
     const { name, value } = event.target;
@@ -144,7 +154,7 @@ const Create = () => {
           onChange={inputHandler}
           error={roomType.error}
           errorMsg={roomType.errorMsg}
-          options={roomTypes}
+          roomTypes={roomTypes}
         />
       </Form>
     </div>

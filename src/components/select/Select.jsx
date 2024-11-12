@@ -1,5 +1,5 @@
 const Select = (props) => {
-  const { name, value, onChange, options, error, errorMsg } = props;
+  const { name, value, onChange, roomTypes, error, errorMsg } = props;
 
   return (
     <div className="select-container">
@@ -8,11 +8,14 @@ const Select = (props) => {
       </label>
       <select name={name} value={value} onChange={onChange}>
         <option value="Select Room Type">Select Room Type</option>
-        {options.map((option) => (
-          <option key={option.id} value={option.value}>
-            {option.name}
-          </option>
-        ))}
+        {roomTypes.map(
+          (roomType) =>
+            roomType.active && (
+              <option key={roomType.id} value={roomType.name}>
+                {roomType.name}
+              </option>
+            )
+        )}
       </select>
       {error && <p className="error-msg">{errorMsg}</p>}
     </div>
