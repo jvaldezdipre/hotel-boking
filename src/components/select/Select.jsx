@@ -11,7 +11,7 @@ const Select = (props) => {
         {roomTypes.map(
           (roomType) =>
             roomType.active && (
-              <option key={roomType.id} value={roomType.name}>
+              <option key={roomType.id} value={roomType.id}>
                 {roomType.name}
               </option>
             )

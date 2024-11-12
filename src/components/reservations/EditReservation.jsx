@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "../../api/axios";
 
 const Edit = () => {
   const { id } = useParams();

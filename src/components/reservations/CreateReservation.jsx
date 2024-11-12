@@ -8,9 +8,11 @@ import axios from "../../api/axios";
 import { config } from "../../api/config";
 import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
-//import { roomTypes } from "../../utils/roomTypes";
+import { useNavigate } from "react-router-dom";
 
-const Create = () => {
+const Create = ({ user }) => {
+  const navigate = useNavigate();
+
   const [roomTypes, setRoomTypes] = useState([]);
   const [guestEmail, setGuestEmail] = useState({
     value: "",
@@ -24,15 +26,14 @@ const Create = () => {
     errorMsg: "Date must be mm-dd-yyyy",
   });
 
-  //working on this after
   const [numberOfNights, setNumberOfNights] = useState({
     value: 0,
     error: false,
     errorMsg: "Number of nights must be greater than 0",
   });
 
-  const [roomType, setRoomType] = useState({
-    value: "Select Room Type",
+  const [roomTypeId, setRoomTypeId] = useState({
+    value: 0,
     error: false,
     errorMsg: "Must select a room type",
   });
@@ -57,7 +58,7 @@ const Create = () => {
         setNumberOfNights({ ...numberOfNights, value: value, error: false });
         break;
       case "Room Type":
-        setRoomType({ ...roomType, value: value, error: false });
+        setRoomTypeId({ ...roomTypeId, value: value, error: false });
         break;
       default:
         break;
@@ -72,46 +73,44 @@ const Create = () => {
     if (!isValidEmail(guestEmail.value)) {
       formError = true;
       setGuestEmail({ ...guestEmail, error: true });
-      console.log("Must be a valid email");
     }
 
     if (!isValidDate(checkInDate.value)) {
       formError = true;
       setCheckInDate({ ...checkInDate, error: true });
-      console.log("Date must be mm-dd-yyyy");
     }
 
     if (numberOfNights.value <= 0) {
       formError = true;
       setNumberOfNights({ ...numberOfNights, error: true });
-      console.log("Number of nights must be greater than 0");
     }
 
-    if (roomType.value === "Select Room Type") {
+    if (roomTypeId.value === 0) {
       formError = true;
-      setRoomType({ ...roomType, error: true });
-      console.log("Must select a room type");
+      setRoomTypeId({ ...roomTypeId, error: true });
     }
 
     if (!formError) {
-      setGuestEmail({ ...guestEmail, error: false });
-      setCheckInDate({ ...checkInDate, error: false });
-      setNumberOfNights({ ...numberOfNights, error: false });
-      setRoomType({ ...roomType, error: false });
-      // axios
-      //   .post(
-      //     RESERVATIONS,
-      //     { guestEmail, checkInDate, numberOfNights, roomType },
-      //     config()
-      //   )
-      //   .then((response) => {
-      //     if (response.status === 200) {
-      //       console.log("reservation created!");
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      axios
+        .post(
+          RESERVATIONS,
+          {
+            user: user,
+            guestEmail: guestEmail.value,
+            roomTypeId: Number(roomTypeId.value),
+            checkInDate: checkInDate.value,
+            numberOfNights: Number(numberOfNights.value),
+          },
+          config()
+        )
+        .then((response) => {
+          console.log("Created new reservation", response.data);
+          navigate("/reservations");
+          setGuestEmail({ ...guestEmail, error: false });
+          setCheckInDate({ ...checkInDate, error: false });
+          setNumberOfNights({ ...numberOfNights, error: false });
+          setRoomTypeId({ ...roomTypeId, error: false });
+        });
     }
   };
 
@@ -150,10 +149,10 @@ const Create = () => {
         />
         <Select
           name="Room Type"
-          value={roomType.value}
+          value={roomTypeId.value}
           onChange={inputHandler}
-          error={roomType.error}
-          errorMsg={roomType.errorMsg}
+          error={roomTypeId.error}
+          errorMsg={roomTypeId.errorMsg}
           roomTypes={roomTypes}
         />
       </Form>

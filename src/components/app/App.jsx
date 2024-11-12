@@ -5,24 +5,29 @@ import { jwtDecode } from "jwt-decode";
 import Login from "../login/Login";
 import ProtectedRoute from "../protected-route/ProtectedRoute";
 import Reservations from "../reservations/Reservations";
-import "./App.css";
 import NavBar from "../nav-bar/NavBar";
 import RoomTypes from "../room-types/RoomTypes";
 import Logout from "../logout/Logout";
-import Create from "../create/Create";
-import Edit from "../edit/Edit";
+import CreateReservation from "../reservations/CreateReservation";
+import EditReservation from "../reservations/EditReservation";
+
+import "./App.css";
 
 const App = () => {
   const token = sessionStorage.getItem("token");
 
   const [loggedIn, setLoggedIn] = useState(token ? true : false);
   const [userRole, setUserRole] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (token) {
       const role = jwtDecode(token).roles;
+      const email = jwtDecode(token).sub;
       setUserRole(role);
+      setUserEmail(email);
+      console.log(email);
       loginHandler();
     }
     setLoading(false);
@@ -92,7 +97,7 @@ const App = () => {
             path="/reservations/create"
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>
-                <Create />
+                <CreateReservation user={userEmail} />
               </ProtectedRoute>
             }
           />
@@ -100,7 +105,7 @@ const App = () => {
             path="/reservations/edit/:id"
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>
-                <Edit />
+                <EditReservation />
               </ProtectedRoute>
             }
           />

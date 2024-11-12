@@ -48,8 +48,6 @@ const Reservations = () => {
   }, []);
 
   const createHandler = () => {
-    //Issue with button rendering in the create component when is not suposed to be there
-    console.log(RESERVATIONS);
     navigate(`${RESERVATIONS}/create`);
   };
 
