@@ -93,30 +93,38 @@ const CreateRoomType = () => {
   };
 
   return (
-    <Form title="Create Room Type" text="Create" onSubmit={submitHandler}>
-      <Input
-        name="Room Type"
-        type="text"
-        value={roomTypeInput.value}
-        error={roomTypeInput.error}
-        errorMsg={roomTypeInput.errorMsg}
-        onChange={inputHandler}
-      />
-      <TextArea
-        name="Description"
-        onChange={inputHandler}
-        value={descriptionInput}
-      />
-      <Input
-        name="Rate"
-        type="number"
-        value={rateInput.value}
-        error={rateInput.error}
-        errorMsg={rateInput.errorMsg}
-        onChange={inputHandler}
-      />
-      <CheckBox name="Active" value={activeInput} onChange={inputHandler} />
-    </Form>
+    <div className="create-container">
+      <h1>Create Room Type</h1>
+      <Form
+        title="Create Room Type"
+        text="Create"
+        onSubmit={submitHandler}
+        noValidate
+      >
+        <Input
+          name="Room Type"
+          type="text"
+          value={roomTypeInput.value}
+          error={roomTypeInput.error}
+          errorMsg={roomTypeInput.errorMsg}
+          onChange={inputHandler}
+        />
+        <TextArea
+          name="Description"
+          onChange={inputHandler}
+          value={descriptionInput}
+        />
+        <Input
+          name="Rate"
+          type="number"
+          value={rateInput.value}
+          error={rateInput.error}
+          errorMsg={rateInput.errorMsg}
+          onChange={inputHandler}
+        />
+        <CheckBox name="Active" checked={activeInput} onChange={inputHandler} />
+      </Form>
+    </div>
   );
 };
 

@@ -125,6 +125,7 @@ const EditReservation = ({ user }) => {
         .put(
           `${RESERVATIONS}/${id}`,
           {
+            id: id,
             user: user,
             guestEmail: guestEmail.value,
             roomTypeId: Number(roomType.value),

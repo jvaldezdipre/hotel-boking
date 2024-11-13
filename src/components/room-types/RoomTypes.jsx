@@ -8,10 +8,10 @@ import { config } from "../../api/config";
 import RoomTypeCard from "./RoomTypeCard";
 
 const RoomTypes = () => {
-  const navigate = useNavigate();
-
   const [roomTypes, setRoomTypes] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
