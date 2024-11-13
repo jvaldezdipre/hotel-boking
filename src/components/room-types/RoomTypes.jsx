@@ -1,7 +1,51 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import axios from "../../api/axios";
+import { ROOM_TYPES } from "../../api/endpoints";
+import { config } from "../../api/config";
+
+import RoomTypeCard from "./RoomTypeCard";
+
 const RoomTypes = () => {
+  const navigate = useNavigate();
+
+  const [roomTypes, setRoomTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(ROOM_TYPES, config())
+      .then((response) => {
+        console.log("Got the room types", response.data);
+        setRoomTypes(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  const createHandler = () => {
+    navigate(`${ROOM_TYPES}/create`);
+  };
+
   return (
     <div>
-      <h1>Room types</h1>
+      <h1>All Room types</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <button className="create-btn" onClick={createHandler}>
+            Create
+          </button>
+          {roomTypes.map((roomType) => (
+            <RoomTypeCard key={roomType.id} roomType={roomType} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

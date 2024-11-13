@@ -10,7 +10,7 @@ import RoomTypes from "../room-types/RoomTypes";
 import Logout from "../logout/Logout";
 import CreateReservation from "../reservations/CreateReservation";
 import EditReservation from "../reservations/EditReservation";
-
+import CreateRoomType from "../room-types/CreateRoomType";
 import "./App.css";
 
 const App = () => {
@@ -105,6 +105,18 @@ const App = () => {
             element={
               <ProtectedRoute loggedIn={loggedIn} role={userRole}>
                 <EditReservation user={userEmail} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/room-types/create"
+            element={
+              <ProtectedRoute
+                loggedIn={loggedIn}
+                role={userRole}
+                roleRequired="manager"
+              >
+                <CreateRoomType />
               </ProtectedRoute>
             }
           />
