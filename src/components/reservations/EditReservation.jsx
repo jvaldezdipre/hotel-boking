@@ -11,11 +11,13 @@ import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 
-const Edit = () => {
+const EditReservation = ({ user }) => {
   const { id } = useParams();
-  console.log(id);
+  const navigate = useNavigate();
 
   const [roomTypes, setRoomTypes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [guestEmail, setGuestEmail] = useState({
     value: "",
     error: false,
@@ -29,37 +31,49 @@ const Edit = () => {
   });
 
   const [numberOfNights, setNumberOfNights] = useState({
-    value: 0,
+    value: "",
     error: false,
     errorMsg: "Number of nights must be greater than 0",
   });
 
   const [roomType, setRoomType] = useState({
-    value: 0,
+    value: "",
     error: false,
     errorMsg: "Must select a room type",
   });
 
   useEffect(() => {
-    Promise.all([
-      axios.get(`${RESERVATIONS}/${id}`, config()),
-      axios.get(ROOM_TYPES, config()),
-    ]).then(([reservationResponse, roomTypesResponse]) => {
-      const reservation = reservationResponse.data;
-      setGuestEmail({ ...guestEmail, value: reservation.guestEmail });
-      setCheckInDate({ ...checkInDate, value: reservation.checkInDate });
-      setNumberOfNights({
-        ...numberOfNights,
-        value: reservation.numberOfNights,
-      });
-      setRoomType({ ...roomType, value: reservation.roomTypeId });
-      console.log(guestEmail.value);
-      console.log(reservation);
+    const getData = () => {
+      Promise.all([
+        axios.get(`${RESERVATIONS}/${id}`, config()),
+        axios.get(ROOM_TYPES, config()),
+      ])
+        .then(([reservationResponse, roomTypesResponse]) => {
+          const reservation = reservationResponse.data;
+          setGuestEmail((prev) => ({ ...prev, value: reservation.guestEmail }));
+          setCheckInDate((prev) => ({
+            ...prev,
+            value: reservation.checkInDate,
+          }));
+          setNumberOfNights((prev) => ({
+            ...prev,
+            value: reservation.numberOfNights,
+          }));
+          setRoomType((prev) => ({
+            ...prev,
+            value: reservation.roomTypeId,
+          }));
 
-      setRoomTypes(roomTypesResponse.data);
-      //setLoading(false);
-    });
-  }, [checkInDate, guestEmail, id, numberOfNights, roomType]);
+          setRoomTypes(roomTypesResponse.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.log("THE CATCH!", error);
+        });
+    };
+    getData();
+  }, [id]);
 
   const inputHandler = (event) => {
     const { name, value } = event.target;
@@ -101,78 +115,84 @@ const Edit = () => {
       setNumberOfNights({ ...numberOfNights, error: true });
     }
 
-    if (roomType.value === "Select Room Type") {
+    if (roomType.value === "0") {
       formError = true;
       setRoomType({ ...roomType, error: true });
     }
 
     if (!formError) {
-      // axios
-      //   .post(
-      //     RESERVATIONS,
-      //     {
-      //       user: user,
-      //       guestEmail: guestEmail.value,
-      //       roomTypeId: Number(roomTypeId.value),
-      //       checkInDate: checkInDate.value,
-      //       numberOfNights: Number(numberOfNights.value),
-      //     },
-      //     config()
-      //   )
-      //   .then((response) => {
-      //     console.log("Created new reservation", response.data);
-      //     navigate("/reservations");
-      //     setGuestEmail({ ...guestEmail, error: false });
-      //     setCheckInDate({ ...checkInDate, error: false });
-      //     setNumberOfNights({ ...numberOfNights, error: false });
-      //     setRoomTypeId({ ...roomTypeId, error: false });
-      //   });
+      axios
+        .put(
+          `${RESERVATIONS}/${id}`,
+          {
+            user: user,
+            guestEmail: guestEmail.value,
+            roomTypeId: Number(roomType.value),
+            checkInDate: checkInDate.value,
+            numberOfNights: Number(numberOfNights.value),
+          },
+          config()
+        )
+        .then((response) => {
+          console.log("Updated reservation", response.data);
+          navigate("/reservations");
+          setGuestEmail({ ...guestEmail, error: false });
+          setCheckInDate({ ...checkInDate, error: false });
+          setNumberOfNights({ ...numberOfNights, error: false });
+          setRoomType({ ...roomType, error: false });
+        });
     }
   };
 
   return (
     <div>
-      <Form
-        title="Edit Reservation"
-        text="Update"
-        onSubmit={submitHandler}
-        noValidate
-      >
-        <Input
-          name="Guest Email"
-          type="email"
-          value={guestEmail.value}
-          onChange={inputHandler}
-          error={guestEmail.error}
-          errorMsg={guestEmail.errorMsg}
-        />
-        <Input
-          name="Check-in Date"
-          type="text"
-          value={checkInDate.value}
-          onChange={inputHandler}
-          error={checkInDate.error}
-          errorMsg={checkInDate.errorMsg}
-        />
-        <Input
-          name="Number of Nights"
-          type="number"
-          value={numberOfNights.value}
-          onChange={inputHandler}
-          error={numberOfNights.error}
-          errorMsg={numberOfNights.errorMsg}
-        />
-        <Select
-          name="Room Type"
-          value={roomType.value}
-          onChange={inputHandler}
-          error={roomType.error}
-          errorMsg={roomType.errorMsg}
-          roomTypes={roomTypes}
-        />
-      </Form>
+      {loading ? (
+        <div>
+          <h1>loading...</h1>
+        </div>
+      ) : (
+        <Form
+          title="Edit Reservation"
+          text="Update"
+          onSubmit={submitHandler}
+          noValidate
+        >
+          <Input
+            name="Guest Email"
+            type="email"
+            value={guestEmail.value}
+            onChange={inputHandler}
+            error={guestEmail.error}
+            errorMsg={guestEmail.errorMsg}
+          />
+          <Input
+            name="Check-in Date"
+            type="text"
+            value={checkInDate.value}
+            onChange={inputHandler}
+            error={checkInDate.error}
+            errorMsg={checkInDate.errorMsg}
+          />
+          <Input
+            name="Number of Nights"
+            type="number"
+            value={numberOfNights.value}
+            onChange={inputHandler}
+            error={numberOfNights.error}
+            errorMsg={numberOfNights.errorMsg}
+          />
+          <Select
+            name="Room Type"
+            value={roomType.value}
+            onChange={inputHandler}
+            error={roomType.error}
+            errorMsg={roomType.errorMsg}
+            roomTypes={roomTypes}
+          />
+        </Form>
+      )}
     </div>
   );
 };
 
-export default Edit;
+export default EditReservation;

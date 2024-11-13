@@ -7,7 +7,7 @@ const Select = (props) => {
         {name}
       </label>
       <select name={name} value={value} onChange={onChange}>
-        <option value="Select Room Type">Select Room Type</option>
+        <option value={0}>Select Room Type</option>
         {roomTypes.map(
           (roomType) =>
             roomType.active && (

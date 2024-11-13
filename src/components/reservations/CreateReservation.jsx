@@ -10,7 +10,7 @@ import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 
-const Create = ({ user }) => {
+const CreateReservation = ({ user }) => {
   const navigate = useNavigate();
 
   const [roomTypes, setRoomTypes] = useState([]);
@@ -159,4 +159,4 @@ const Create = ({ user }) => {
   );
 };
 
-export default Create;
+export default CreateReservation;
