@@ -31,6 +31,10 @@ const RoomTypes = () => {
     navigate(`${ROOM_TYPES}/create`);
   };
 
+  const editHandler = (id) => {
+    navigate(`${ROOM_TYPES}/edit/${id}`);
+  };
+
   return (
     <div>
       <h1>All Room types</h1>
@@ -42,7 +46,11 @@ const RoomTypes = () => {
             Create
           </button>
           {roomTypes.map((roomType) => (
-            <RoomTypeCard key={roomType.id} roomType={roomType} />
+            <RoomTypeCard
+              key={roomType.id}
+              roomType={roomType}
+              onClickEdit={() => editHandler(roomType.id)}
+            />
           ))}
         </>
       )}

@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-import Login from "../login/Login";
 import ProtectedRoute from "../protected-route/ProtectedRoute";
-import Reservations from "../reservations/Reservations";
-import NavBar from "../nav-bar/NavBar";
-import RoomTypes from "../room-types/RoomTypes";
+import Login from "../login/Login";
 import Logout from "../logout/Logout";
+import NavBar from "../nav-bar/NavBar";
+import Reservations from "../reservations/Reservations";
+import RoomTypes from "../room-types/RoomTypes";
 import CreateReservation from "../reservations/CreateReservation";
 import EditReservation from "../reservations/EditReservation";
 import CreateRoomType from "../room-types/CreateRoomType";
+import EditRoomType from "../room-types/EditRoomType";
+
 import "./App.css";
 
 const App = () => {
@@ -117,6 +119,18 @@ const App = () => {
                 roleRequired="manager"
               >
                 <CreateRoomType />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/room-types/edit/:id"
+            element={
+              <ProtectedRoute
+                loggedIn={loggedIn}
+                role={userRole}
+                roleRequired="manager"
+              >
+                <EditRoomType />
               </ProtectedRoute>
             }
           />
