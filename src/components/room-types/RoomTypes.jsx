@@ -34,7 +34,6 @@ const RoomTypes = () => {
   const editHandler = (id) => {
     navigate(`${ROOM_TYPES}/edit/${id}`);
   };
-
   return (
     <div>
       <h1>All Room types</h1>
