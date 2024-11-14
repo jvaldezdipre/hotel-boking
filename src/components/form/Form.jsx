@@ -1,5 +1,7 @@
 import Button from "../button/Button";
 
+import "./Form.css";
+
 const Form = (props) => {
   const {
     children,

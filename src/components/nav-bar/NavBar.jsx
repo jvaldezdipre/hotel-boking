@@ -4,7 +4,7 @@ import "./NavBar.css";
 const NavBar = ({ loggedIn, role }) => {
   return (
     <nav className="nav-bar">
-      <h3>Hotel Bookings</h3>
+      <h2>Hotel Bookings</h2>
 
       <ul className="nav-links-container">
         {loggedIn && (

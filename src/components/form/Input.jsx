@@ -1,3 +1,5 @@
+import "./Form.css";
+
 const Input = (props) => {
   const { error, errorMsg, name, type, value, onChange } = props;
 
@@ -7,8 +9,9 @@ const Input = (props) => {
         {name}
       </label>
       <input
-        className="input"
+        className={error ? "input error" : "input"}
         name={name}
+        placeholder={name}
         type={type}
         value={value}
         id={name}

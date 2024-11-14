@@ -8,6 +8,8 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import axios from "../../api/axios";
 
+import "./Login.css";
+
 const Login = ({ login }) => {
   const navigate = useNavigate();
 
@@ -62,28 +64,36 @@ const Login = ({ login }) => {
 
   return (
     <div className="login">
-      <Form
-        title="Login"
-        btnClass="login-btn"
-        text="Login"
-        error={error}
-        errorMsg="Invalid email or password"
-        onSubmit={submitHandler}
-        noValidate
-      >
-        <Input
-          name="Email"
-          type="email"
-          value={email}
-          onChange={inputHandler}
-        />
-        <Input
-          name="Password"
-          type="password"
-          value={password}
-          onChange={inputHandler}
-        />
-      </Form>
+      <div className="login-container">
+        <div className="login-image">
+          <h3>Welcome Back</h3>
+          <p>Sign in to your account to continue</p>
+        </div>
+        <Form
+          title="LOGIN"
+          btnClass="login-btn"
+          text="Log in"
+          error={error}
+          errorMsg="Invalid email or password"
+          onSubmit={submitHandler}
+          noValidate
+        >
+          <Input
+            name="Email"
+            type="email"
+            value={email}
+            onChange={inputHandler}
+            error={error}
+          />
+          <Input
+            name="Password"
+            type="password"
+            value={password}
+            onChange={inputHandler}
+            error={error}
+          />
+        </Form>
+      </div>
     </div>
   );
 };

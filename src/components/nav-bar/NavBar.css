@@ -1,13 +1,37 @@
+.nav-bar {
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.nav-bar h2 {
+  font-size: 27.2px;
+  font-weight: 600;
+  color: white;
+}
+
+.nav-links-container {
+  display: flex;
+  gap: 2rem;
+}
+
 li {
   list-style: none;
 }
 
 .link {
   text-decoration: none;
-  color: black;
+  color: white;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: rgb(97, 202, 237);
 }
 
 .active {
-  color: red;
+  color: rgb(97, 202, 237);
   text-decoration: none;
 }
