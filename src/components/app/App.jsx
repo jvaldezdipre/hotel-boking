@@ -12,7 +12,7 @@ import CreateReservation from "../reservations/CreateReservation";
 import EditReservation from "../reservations/EditReservation";
 import CreateRoomType from "../room-types/CreateRoomType";
 import EditRoomType from "../room-types/EditRoomType";
-
+import NotFound from "../not-found/NotFound";
 import "./App.css";
 
 const App = () => {
@@ -131,6 +131,14 @@ const App = () => {
                 roleRequired="manager"
               >
                 <EditRoomType />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <NotFound />
               </ProtectedRoute>
             }
           />
