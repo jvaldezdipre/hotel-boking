@@ -35,23 +35,27 @@ const RoomTypes = () => {
     navigate(`${ROOM_TYPES}/edit/${id}`);
   };
   return (
-    <div>
-      <h1>All Room types</h1>
+    <div className="container">
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <>
-          <button className="create-btn" onClick={createHandler}>
-            Create
-          </button>
-          {roomTypes.map((roomType) => (
-            <RoomTypeCard
-              key={roomType.id}
-              roomType={roomType}
-              onClickEdit={() => editHandler(roomType.id)}
-            />
-          ))}
-        </>
+        <div>
+          <h1 className="title">All Room types</h1>
+          <div className="create-btn-container">
+            <button className="create-btn" onClick={createHandler}>
+              Create
+            </button>
+          </div>
+          <div className="cards-container">
+            {roomTypes.map((roomType) => (
+              <RoomTypeCard
+                key={roomType.id}
+                roomType={roomType}
+                onClickEdit={() => editHandler(roomType.id)}
+              />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

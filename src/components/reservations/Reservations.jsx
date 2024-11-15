@@ -7,6 +7,8 @@ import { config } from "../../api/config";
 
 import ReservationCard from "./ReservationCard";
 
+import "./Reservations.css";
+
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);
   const [roomTypes, setRoomTypes] = useState([]);
@@ -52,18 +54,20 @@ const Reservations = () => {
   };
 
   return (
-    <>
+    <div className="container">
       {loading ? (
         <div>
           <h1>loading...</h1>
         </div>
       ) : (
         <div>
-          <h1>All Reservations</h1>
-          <button className="create-btn" onClick={createHandler}>
-            Create
-          </button>
-          <div>
+          <h1 className="title">All Reservations</h1>
+          <div className="create-btn-container">
+            <button className="create-btn" onClick={createHandler}>
+              Create
+            </button>
+          </div>
+          <div className="cards-container">
             {reservations.map((reservation) => (
               <ReservationCard
                 key={reservation.id}
@@ -78,7 +82,7 @@ const Reservations = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

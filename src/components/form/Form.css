@@ -1,3 +1,38 @@
+form {
+  width: 100%;
+  padding: 35px;
+}
+
+form .input-container {
+  /* position: relative; */
+  height: 200px;
+  width: 100%;
+  /* margin-top: 20px; */
+}
+
+form button {
+  width: 100%;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 14px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 25px 0;
+  background: #00bcd4;
+  transition: 0.2s ease;
+}
+
+form button:hover {
+  background: #0097a7;
+}
+
+.input-label-container {
+  text-align: left;
+}
+
 .err-message {
   color: red;
 }
@@ -23,14 +58,6 @@
   transition: 0.2s ease;
 }
 
-/* .input:focus {
-  border: 1px solid #0097a7;
-} */
-
 .input.error {
   border: 1px solid red;
 }
-
-/* .input.error:focus {
-  border: 1px solid #0097a7;
-} */

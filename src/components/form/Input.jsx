@@ -5,9 +5,11 @@ const Input = (props) => {
 
   return (
     <div className="input-container">
-      <label className="input-label" htmlFor={name}>
-        {name}
-      </label>
+      <div className="input-label-container">
+        <label className="input-label" htmlFor={name}>
+          {name}
+        </label>
+      </div>
       <input
         className={error ? "input error" : "input"}
         name={name}
