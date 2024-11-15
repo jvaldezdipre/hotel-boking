@@ -16,14 +16,26 @@ import NotFound from "../not-found/NotFound";
 import Loading from "../loading/Loading";
 import "./App.css";
 
+/**
+ * Main application component.
+ *
+ * Routes to different areas of the application based on the user's role and login status.
+ * Checks if the user is logged in and sets the user's role and email.
+ */
 const App = () => {
   const token = sessionStorage.getItem("token");
 
+  /**
+   * State variables to manage login status, user role, user email, and loading state.
+   */
   const [loggedIn, setLoggedIn] = useState(token ? true : false);
   const [userRole, setUserRole] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Effect hook to handle token and set user role and email.
+   */
   useEffect(() => {
     if (token) {
       const role = jwtDecode(token).roles;
@@ -35,10 +47,17 @@ const App = () => {
     setLoading(false);
   }, [token]);
 
+  /**
+   * Handler function to set the user role based on the decoded token.
+   * @param {string} decodedToken - The decoded token containing user role information.
+   */
   const userRoleHandler = (decodedToken) => {
     setUserRole(jwtDecode(decodedToken).roles);
   };
 
+  /**
+   * Handler function to set the logged in status to true.
+   */
   const loginHandler = () => {
     setLoggedIn(true);
   };
@@ -47,6 +66,9 @@ const App = () => {
   //   setLoading(condition);
   // };
 
+  /**
+   * Handler function to set the logged in status to false and remove the token from session storage.
+   */
   const logoutHandler = () => {
     loggedIn && setLoggedIn(false);
     sessionStorage.removeItem("token");

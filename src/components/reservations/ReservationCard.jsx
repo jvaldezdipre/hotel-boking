@@ -1,3 +1,10 @@
+/**
+ * ReservationCard component.
+ * Displays a reservation card with details and buttons for editing and deleting.
+ * The edit button navigates to the EditReservation page
+ * The delete button deletes the reservation.
+ * @param {Object} props - reservation, roomType, onClickEdit, onClickDelete.
+ */
 const ReservationCard = (props) => {
   const { reservation, roomType, onClickEdit, onClickDelete } = props;
   return (

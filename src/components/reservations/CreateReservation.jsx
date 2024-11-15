@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import Select from "../form/Select";
+import Modal from "../modal/Modal";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
@@ -11,111 +12,154 @@ import { isValidEmail, isValidDate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
 import "./Reservation.css";
 
+/**
+ * CreateReservation component.
+ * Displays the form for creating a new reservation.
+ * @param {Object} props - user.
+ */
 const CreateReservation = ({ user }) => {
   const navigate = useNavigate();
 
+  /**
+   * State variables to manage room types, guest email,
+   * check-in date, number of nights, and room type and modal state.
+   */
   const [roomTypes, setRoomTypes] = useState([]);
-  const [guestEmail, setGuestEmail] = useState({
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [guestEmailInput, setGuestEmailInput] = useState({
     value: "",
     error: false,
     errorMsg: "Must be a valid email",
   });
 
-  const [checkInDate, setCheckInDate] = useState({
+  const [checkInDateInput, setCheckInDateInput] = useState({
     value: "",
     error: false,
     errorMsg: "Date must be mm-dd-yyyy",
   });
 
-  const [numberOfNights, setNumberOfNights] = useState({
+  const [numberOfNightsInput, setNumberOfNightsInput] = useState({
     value: 0,
     error: false,
     errorMsg: "Number of nights must be greater than 0",
   });
 
-  const [roomType, setRoomType] = useState({
+  const [roomTypeInput, setRoomTypeInput] = useState({
     value: 0,
     error: false,
     errorMsg: "Must select a room type",
   });
 
+  /**
+   * Retrieves the room types from the API and sets it to the room types state.
+   */
   useEffect(() => {
     axios.get(ROOM_TYPES, config()).then((response) => {
       setRoomTypes(response.data);
     });
   }, []);
 
+  /**
+   * Handles the input changes for the form fields.
+   * @param {Event} event - The event object.
+   */
   const inputHandler = (event) => {
     const { name, value } = event.target;
     switch (name) {
       case "Guest Email":
-        setGuestEmail({ ...guestEmail, value: value, error: false });
+        setGuestEmailInput((prev) => ({ ...prev, value: value, error: false }));
         break;
       case "Check-in Date":
-        setCheckInDate({ ...checkInDate, value: value, error: false });
+        setCheckInDateInput((prev) => ({
+          ...prev,
+          value: value,
+          error: false,
+        }));
         break;
       case "Number of Nights":
-        setNumberOfNights({ ...numberOfNights, value: value, error: false });
+        setNumberOfNightsInput((prev) => ({
+          ...prev,
+          value: value,
+          error: false,
+        }));
         break;
       case "Room Type":
-        setRoomType({ ...roomType, value: value, error: false });
+        setRoomTypeInput((prev) => ({ ...prev, value: value, error: false }));
         break;
       default:
         break;
     }
   };
 
+  /**
+   * Handles the form submission.
+   * Validates the form fields and creates a new reservation.
+   * @param {Event} event - The event object.
+   */
   const submitHandler = async (event) => {
+    // Prevent the default form submission behavior
     event.preventDefault();
 
     let formError = false;
 
-    if (!isValidEmail(guestEmail.value)) {
+    // Validate guest email
+    if (!isValidEmail(guestEmailInput.value)) {
       formError = true;
-      setGuestEmail({ ...guestEmail, error: true });
+      setGuestEmailInput((prev) => ({ ...prev, error: true }));
     }
 
-    if (!isValidDate(checkInDate.value)) {
+    // Validate check-in date
+    if (!isValidDate(checkInDateInput.value)) {
       formError = true;
-      setCheckInDate({ ...checkInDate, error: true });
+      setCheckInDateInput((prev) => ({ ...prev, error: true }));
     }
 
-    if (numberOfNights.value <= 0) {
+    // Validate number of nights
+    if (numberOfNightsInput.value <= 0) {
       formError = true;
-      setNumberOfNights({ ...numberOfNights, error: true });
+      setNumberOfNightsInput((prev) => ({ ...prev, error: true }));
     }
 
-    if (roomType.value === 0) {
+    // Validate room type
+    if (roomTypeInput.value === 0) {
       formError = true;
-      setRoomType({ ...roomType, error: true });
+      setRoomTypeInput((prev) => ({ ...prev, error: true }));
     }
 
+    // If no form errors are found, create the reservation
     if (!formError) {
       axios
         .post(
           RESERVATIONS,
           {
             user: user,
-            guestEmail: guestEmail.value,
-            roomTypeId: Number(roomType.value),
-            checkInDate: checkInDate.value,
-            numberOfNights: Number(numberOfNights.value),
+            guestEmail: guestEmailInput.value,
+            roomTypeId: Number(roomTypeInput.value),
+            checkInDate: checkInDateInput.value,
+            numberOfNights: Number(numberOfNightsInput.value),
           },
           config()
         )
-        .then((response) => {
-          console.log("Created new reservation", response.data);
+        .then(() => {
           navigate("/reservations");
-          setGuestEmail({ ...guestEmail, error: false });
-          setCheckInDate({ ...checkInDate, error: false });
-          setNumberOfNights({ ...numberOfNights, error: false });
-          setRoomType({ ...roomType, error: false });
+          setGuestEmailInput((prev) => ({ ...prev, error: false }));
+          setCheckInDateInput((prev) => ({ ...prev, error: false }));
+          setNumberOfNightsInput((prev) => ({ ...prev, error: false }));
+          setRoomTypeInput((prev) => ({ ...prev, error: false }));
+        })
+        .catch(() => {
+          setIsModalOpen(true);
         });
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="reservation-container">
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
       <div className="reservation-form-container">
         <Form
           title="Create a Reservation"
@@ -126,33 +170,33 @@ const CreateReservation = ({ user }) => {
           <Input
             name="Guest Email"
             type="email"
-            value={guestEmail.value}
+            value={guestEmailInput.value}
             onChange={inputHandler}
-            error={guestEmail.error}
-            errorMsg={guestEmail.errorMsg}
+            error={guestEmailInput.error}
+            errorMsg={guestEmailInput.errorMsg}
           />
           <Input
             name="Check-in Date"
             type="text"
-            value={checkInDate.value}
+            value={checkInDateInput.value}
             onChange={inputHandler}
-            error={checkInDate.error}
-            errorMsg={checkInDate.errorMsg}
+            error={checkInDateInput.error}
+            errorMsg={checkInDateInput.errorMsg}
           />
           <Input
             name="Number of Nights"
             type="number"
-            value={numberOfNights.value}
+            value={numberOfNightsInput.value}
             onChange={inputHandler}
-            error={numberOfNights.error}
-            errorMsg={numberOfNights.errorMsg}
+            error={numberOfNightsInput.error}
+            errorMsg={numberOfNightsInput.errorMsg}
           />
           <Select
             name="Room Type"
-            value={roomType.value}
+            value={roomTypeInput.value}
             onChange={inputHandler}
-            error={roomType.error}
-            errorMsg={roomType.errorMsg}
+            error={roomTypeInput.error}
+            errorMsg={roomTypeInput.errorMsg}
             roomTypes={roomTypes}
           />
         </Form>

@@ -15,11 +15,24 @@ import { isValidRoomType } from "../../utils/validation";
 
 import "./RoomTypes.css";
 
+/**
+ * EditRoomType component
+ * Allows the user to edit a room type.
+ */
 const EditRoomType = () => {
+  // Get the room type id from the url
   const { id } = useParams();
+
+  // Enables navigation to other pages
   const navigate = useNavigate();
 
+  /**
+   * State variables to manage the room type input, description input,
+   * rate input, active input, and loading state.
+   */
   const [loading, setLoading] = useState(true);
+  const [descriptionInput, setDescriptionInput] = useState("");
+  const [activeInput, setActiveInput] = useState(false);
 
   const [roomTypeInput, setRoomTypeInput] = useState({
     value: "",
@@ -27,16 +40,16 @@ const EditRoomType = () => {
     errorMsg: "Must be at least 3 characters",
   });
 
-  const [descriptionInput, setDescriptionInput] = useState("");
-
   const [rateInput, setRateInput] = useState({
     value: "",
     error: false,
     errorMsg: "Must be greater than 0",
   });
 
-  const [activeInput, setActiveInput] = useState(false);
-
+  /**
+   * Fetches the room type data with the given id from the api
+   * and sets the room type input state variables.
+   */
   useEffect(() => {
     const getData = () => {
       axios
@@ -58,23 +71,28 @@ const EditRoomType = () => {
         })
         .catch((error) => {
           setLoading(false);
+          // TODO: Handle error
           console.log("Error fetching room type", error);
         });
     };
     getData();
   }, [id]);
 
+  /**
+   * Handles the input changes for the form fields.
+   * @param {Event} event - The event object.
+   */
   const inputHandler = (event) => {
     const { name, value } = event.target;
     switch (name) {
       case "Room Type":
-        setRoomTypeInput({ ...roomTypeInput, value: value });
+        setRoomTypeInput((prev) => ({ ...prev, value: value }));
         break;
       case "Description":
         setDescriptionInput(value);
         break;
       case "Rate":
-        setRateInput({ ...rateInput, value: value });
+        setRateInput((prev) => ({ ...prev, value: value }));
         break;
       case "Active":
         setActiveInput(event.target.checked ? true : false);
@@ -84,21 +102,29 @@ const EditRoomType = () => {
     }
   };
 
+  /**
+   * Handles the edit form submission.
+   * @param {Event} event - The event object.
+   */
   const submitHandler = (event) => {
+    // Prevents the default form submission
     event.preventDefault();
 
     let formError = false;
 
+    // Validate room type input
     if (!isValidRoomType(roomTypeInput.value)) {
       formError = true;
-      setRoomTypeInput({ ...roomTypeInput, error: true });
+      setRoomTypeInput((prev) => ({ ...prev, error: true }));
     }
 
+    // Validate rate input
     if (rateInput.value <= 0) {
       formError = true;
-      setRateInput({ ...rateInput, error: true });
+      setRateInput((prev) => ({ ...prev, error: true }));
     }
 
+    // If no form errors are found, update the room type
     if (!formError) {
       console.log("Form is valid");
       navigate("/room-types");
@@ -114,15 +140,15 @@ const EditRoomType = () => {
           },
           config()
         )
-        .then((response) => {
-          console.log("Updated room type", response.data);
+        .then(() => {
           navigate("/room-types");
-          setRoomTypeInput({ ...roomTypeInput, error: false });
-          setRateInput({ ...rateInput, error: false });
+          setRoomTypeInput((prev) => ({ ...prev, error: false }));
+          setRateInput((prev) => ({ ...prev, error: false }));
           setActiveInput(false);
           setDescriptionInput("");
         })
         .catch((error) => {
+          // TODO: Handle error
           console.log("Error updating room type", error);
         });
     }

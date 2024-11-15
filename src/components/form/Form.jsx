@@ -2,6 +2,10 @@ import Button from "../button/Button";
 
 import "./Form.css";
 
+/**
+ * Form component.
+ * @param {Object} props - children, title, onSubmit, className, text, error, errorMsg, noValidate.
+ */
 const Form = (props) => {
   const {
     children,

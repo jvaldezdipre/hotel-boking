@@ -7,16 +7,28 @@ import { LOGIN_URL } from "../../api/endpoints";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import axios from "../../api/axios";
-
+import Modal from "../modal/Modal";
 import "./Login.css";
 
+/**
+ * Login component.
+ * @param {Object} props - login function.
+ */
 const Login = ({ login }) => {
   const navigate = useNavigate();
 
+  /**
+   * State variables to manage email, password, error state, and modal state.
+   */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  /**
+   * Handler function to update the email or password state using the input field name.
+   * @param {Event} event - The event object.
+   */
   const inputHandler = (event) => {
     switch (event.target.name) {
       case "Email":
@@ -30,6 +42,10 @@ const Login = ({ login }) => {
     }
   };
 
+  /**
+   * Handler function to submit the login form.
+   * @param {Event} event - The event object.
+   */
   const submitHandler = async (event) => {
     event.preventDefault();
 
@@ -56,14 +72,19 @@ const Login = ({ login }) => {
             console.log("logged in!");
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          setIsModalOpen(true);
         });
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="login">
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
       <div className="login-container">
         <div className="login-image">
           <h3>Welcome Back</h3>

@@ -6,6 +6,7 @@ import Input from "../form/Input";
 import TextArea from "../form/TextArea";
 import CheckBox from "../form/CheckBox";
 import axios from "../../api/axios";
+import Modal from "../modal/Modal";
 
 import { config } from "../../api/config";
 import { ROOM_TYPES } from "../../api/endpoints";
@@ -13,8 +14,20 @@ import { isValidRoomType } from "../../utils/validation";
 
 import "./RoomTypes.css";
 
+/**
+ * CreateRoomType component.
+ * Displays the form for creating a new room type.
+ */
 const CreateRoomType = () => {
   const navigate = useNavigate();
+
+  /**
+   * State variables to manage room type input, description input, rate input,
+   * and active input and modal state.
+   */
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [descriptionInput, setDescriptionInput] = useState("");
+  const [activeInput, setActiveInput] = useState(false);
 
   const [roomTypeInput, setRoomTypeInput] = useState({
     value: "",
@@ -22,27 +35,27 @@ const CreateRoomType = () => {
     errorMsg: "Must be at least 3 characters",
   });
 
-  const [descriptionInput, setDescriptionInput] = useState("");
-
   const [rateInput, setRateInput] = useState({
     value: "",
     error: false,
     errorMsg: "Must be greater than 0",
   });
 
-  const [activeInput, setActiveInput] = useState(false);
-
+  /**
+   * Handles the input changes for the form fields.
+   * @param {Event} event - The event object.
+   */
   const inputHandler = (event) => {
     const { name, value } = event.target;
     switch (name) {
       case "Room Type":
-        setRoomTypeInput({ ...roomTypeInput, value: value });
+        setRoomTypeInput((prev) => ({ ...prev, value: value }));
         break;
       case "Description":
         setDescriptionInput(value);
         break;
       case "Rate":
-        setRateInput({ ...rateInput, value: value });
+        setRateInput((prev) => ({ ...prev, value: value }));
         break;
       case "Active":
         setActiveInput(event.target.checked ? true : false);
@@ -52,21 +65,28 @@ const CreateRoomType = () => {
     }
   };
 
+  /**
+   * Handles the form submission.
+   * @param {Event} event - The event object.
+   */
   const submitHandler = (event) => {
     event.preventDefault();
 
     let formError = false;
 
+    // Validate room type
     if (!isValidRoomType(roomTypeInput.value)) {
       formError = true;
-      setRoomTypeInput({ ...roomTypeInput, error: true });
+      setRoomTypeInput((prev) => ({ ...prev, error: true }));
     }
 
+    // Validate rate
     if (rateInput.value <= 0) {
       formError = true;
-      setRateInput({ ...rateInput, error: true });
+      setRateInput((prev) => ({ ...prev, error: true }));
     }
 
+    // If no form errors are found, create the room type
     if (!formError) {
       console.log("Form is valid");
       axios
@@ -83,19 +103,24 @@ const CreateRoomType = () => {
         .then((response) => {
           console.log("Created new room type", response.data);
           navigate("/room-types");
-          setRoomTypeInput({ ...roomTypeInput, error: false });
-          setRateInput({ ...rateInput, error: false });
+          setRoomTypeInput((prev) => ({ ...prev, error: false }));
+          setRateInput((prev) => ({ ...prev, error: false }));
           setActiveInput(false);
           setDescriptionInput("");
         })
-        .catch((error) => {
-          console.log("Error creating room type", error);
+        .catch(() => {
+          setIsModalOpen(true);
         });
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="room-types-container">
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
       <div className="room-types-form-container">
         <Form
           title="Create Room Type"
@@ -136,11 +161,3 @@ const CreateRoomType = () => {
 };
 
 export default CreateRoomType;
-
-// {
-//     "id": 1,
-//     "name": "King",
-//     "description": "Single king non-smoking",
-//     "rate": 129.99,
-//     "active": true
-// }

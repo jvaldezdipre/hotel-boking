@@ -5,20 +5,34 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import Select from "../form/Select";
 import Loading from "../loading/Loading";
+import Modal from "../modal/Modal";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
 import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
+import "./Reservation.css";
 
+/**
+ * EditReservation component.
+ * Displays the form for editing a reservation.
+ * @param {Object} props - user.
+ */
 const EditReservation = ({ user }) => {
+  // Get the reservation id from the url
   const { id } = useParams();
+
+  // Enable navigation to other pages
   const navigate = useNavigate();
 
+  /**
+   * State variables to manage room types, guest email,
+   * check-in date, number of nights, room type and loading state and modal state.
+   */
   const [roomTypes, setRoomTypes] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestEmail, setGuestEmail] = useState({
     value: "",
     error: false,
@@ -43,6 +57,10 @@ const EditReservation = ({ user }) => {
     errorMsg: "Must select a room type",
   });
 
+  /**
+   * Fetches the reservation and room types data from the API.
+   * Updates the state variables with the fetched data.
+   */
   useEffect(() => {
     const getData = () => {
       Promise.all([
@@ -68,59 +86,73 @@ const EditReservation = ({ user }) => {
           setRoomTypes(roomTypesResponse.data);
           setLoading(false);
         })
-        .catch((error) => {
+        .catch(() => {
           setLoading(false);
-          console.log("THE CATCH!", error);
+          setIsModalOpen(true);
         });
     };
     getData();
   }, [id]);
 
+  /**
+   * Handles the input changes for the form fields.
+   * @param {Event} event - The event object.
+   */
   const inputHandler = (event) => {
     const { name, value } = event.target;
     switch (name) {
       case "Guest Email":
-        setGuestEmail({ ...guestEmail, value: value, error: false });
+        setGuestEmail((prev) => ({ ...prev, value: value, error: false }));
         break;
       case "Check-in Date":
-        setCheckInDate({ ...checkInDate, value: value, error: false });
+        setCheckInDate((prev) => ({ ...prev, value: value, error: false }));
         break;
       case "Number of Nights":
-        setNumberOfNights({ ...numberOfNights, value: value, error: false });
+        setNumberOfNights((prev) => ({ ...prev, value: value, error: false }));
         break;
       case "Room Type":
-        setRoomType({ ...roomType, value: value, error: false });
+        setRoomType((prev) => ({ ...prev, value: value, error: false }));
         break;
       default:
         break;
     }
   };
 
+  /**
+   * Handles the form submission.
+   * Validates the form fields and updates the reservation.
+   * @param {Event} event - The event object.
+   */
   const submitHandler = async (event) => {
     event.preventDefault();
 
     let formError = false;
 
+    // Validate guest email
     if (!isValidEmail(guestEmail.value)) {
       formError = true;
-      setGuestEmail({ ...guestEmail, error: true });
+      setGuestEmail((prev) => ({ ...prev, error: true }));
     }
 
+    // Validate check-in date
     if (!isValidDate(checkInDate.value)) {
       formError = true;
-      setCheckInDate({ ...checkInDate, error: true });
+      setCheckInDate((prev) => ({ ...prev, error: true }));
     }
 
+    // Validate number of nights
     if (numberOfNights.value <= 0) {
       formError = true;
-      setNumberOfNights({ ...numberOfNights, error: true });
+      setNumberOfNights((prev) => ({ ...prev, error: true }));
     }
 
+    // Validate room type
     if (roomType.value === "0") {
       formError = true;
-      setRoomType({ ...roomType, error: true });
+      setRoomType((prev) => ({ ...prev, error: true }));
     }
 
+    // If no form errors are found, update the reservation
     if (!formError) {
       axios
         .put(
@@ -138,12 +170,19 @@ const EditReservation = ({ user }) => {
         .then((response) => {
           console.log("Updated reservation", response.data);
           navigate("/reservations");
-          setGuestEmail({ ...guestEmail, error: false });
-          setCheckInDate({ ...checkInDate, error: false });
-          setNumberOfNights({ ...numberOfNights, error: false });
-          setRoomType({ ...roomType, error: false });
+          setGuestEmail((prev) => ({ ...prev, error: false }));
+          setCheckInDate((prev) => ({ ...prev, error: false }));
+          setNumberOfNights((prev) => ({ ...prev, error: false }));
+          setRoomType((prev) => ({ ...prev, error: false }));
+        })
+        .catch(() => {
+          setIsModalOpen(true);
         });
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -154,6 +193,7 @@ const EditReservation = ({ user }) => {
         </div>
       ) : (
         <div className="reservation-container">
+          <Modal isOpen={isModalOpen} onClose={closeModal} />
           <div className="reservation-form-container">
             <Form
               title="Edit Reservation"

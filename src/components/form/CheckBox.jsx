@@ -1,3 +1,7 @@
+/**
+ * Checkbox component.
+ * @param {Object} props - name, checked, onChange.
+ */
 const CheckBox = (props) => {
   const { name, checked, onChange } = props;
   return (

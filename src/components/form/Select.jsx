@@ -1,3 +1,7 @@
+/**
+ * Select component.
+ * @param {Object} props - name, value, onChange, roomTypes, error, errorMsg.
+ */
 const Select = (props) => {
   const { name, value, onChange, roomTypes, error, errorMsg } = props;
 

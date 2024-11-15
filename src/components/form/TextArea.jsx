@@ -1,3 +1,7 @@
+/**
+ * TextArea component.
+ * @param {Object} props - name, value, onChange.
+ */
 const TextArea = (props) => {
   const { name, value, onChange } = props;
   return (

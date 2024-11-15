@@ -1,6 +1,11 @@
 import { NavLink, Link } from "react-router-dom";
 import "./NavBar.css";
 
+/**
+ * NavBar component.
+ * Displays the navigation bar based on the user's login status and role.
+ * @param {Object} props - loggedIn, role.
+ */
 const NavBar = ({ loggedIn, role }) => {
   return (
     <nav className="nav-bar">

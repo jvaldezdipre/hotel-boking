@@ -1,5 +1,9 @@
 import "./Form.css";
 
+/**
+ * Input component.
+ * @param {Object} props - error, errorMsg, name, type, value, onChange.
+ */
 const Input = (props) => {
   const { error, errorMsg, name, type, value, onChange } = props;
 

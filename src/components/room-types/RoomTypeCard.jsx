@@ -1,3 +1,8 @@
+/**
+ * RoomTypeCard component.
+ * Displays a room type card with details and an edit button.
+ * @param {Object} props - roomType and onClickEdit function.
+ */
 const RoomTypeCard = (props) => {
   const { roomType, onClickEdit } = props;
   return (
