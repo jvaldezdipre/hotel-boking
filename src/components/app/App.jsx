@@ -13,6 +13,7 @@ import EditReservation from "../reservations/EditReservation";
 import CreateRoomType from "../room-types/CreateRoomType";
 import EditRoomType from "../room-types/EditRoomType";
 import NotFound from "../not-found/NotFound";
+import Loading from "../loading/Loading";
 import "./App.css";
 
 const App = () => {
@@ -55,9 +56,7 @@ const App = () => {
     <BrowserRouter>
       <NavBar loggedIn={loggedIn} role={userRole} />
       {loading ? (
-        <div>
-          <h1>loading...</h1>
-        </div>
+        <Loading />
       ) : (
         <Routes>
           <Route

@@ -9,6 +9,7 @@ import { config } from "../../api/config";
 import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
+import "./Reservation.css";
 
 const CreateReservation = ({ user }) => {
   const navigate = useNavigate();
@@ -114,47 +115,48 @@ const CreateReservation = ({ user }) => {
   };
 
   return (
-    <div className="create-container">
-      <h1>Create</h1>
-      <Form
-        title="Create a Reservation"
-        text="Create"
-        onSubmit={submitHandler}
-        noValidate
-      >
-        <Input
-          name="Guest Email"
-          type="email"
-          value={guestEmail.value}
-          onChange={inputHandler}
-          error={guestEmail.error}
-          errorMsg={guestEmail.errorMsg}
-        />
-        <Input
-          name="Check-in Date"
-          type="text"
-          value={checkInDate.value}
-          onChange={inputHandler}
-          error={checkInDate.error}
-          errorMsg={checkInDate.errorMsg}
-        />
-        <Input
-          name="Number of Nights"
-          type="number"
-          value={numberOfNights.value}
-          onChange={inputHandler}
-          error={numberOfNights.error}
-          errorMsg={numberOfNights.errorMsg}
-        />
-        <Select
-          name="Room Type"
-          value={roomType.value}
-          onChange={inputHandler}
-          error={roomType.error}
-          errorMsg={roomType.errorMsg}
-          roomTypes={roomTypes}
-        />
-      </Form>
+    <div className="reservation-container">
+      <div className="reservation-form-container">
+        <Form
+          title="Create a Reservation"
+          text="Create"
+          onSubmit={submitHandler}
+          noValidate
+        >
+          <Input
+            name="Guest Email"
+            type="email"
+            value={guestEmail.value}
+            onChange={inputHandler}
+            error={guestEmail.error}
+            errorMsg={guestEmail.errorMsg}
+          />
+          <Input
+            name="Check-in Date"
+            type="text"
+            value={checkInDate.value}
+            onChange={inputHandler}
+            error={checkInDate.error}
+            errorMsg={checkInDate.errorMsg}
+          />
+          <Input
+            name="Number of Nights"
+            type="number"
+            value={numberOfNights.value}
+            onChange={inputHandler}
+            error={numberOfNights.error}
+            errorMsg={numberOfNights.errorMsg}
+          />
+          <Select
+            name="Room Type"
+            value={roomType.value}
+            onChange={inputHandler}
+            error={roomType.error}
+            errorMsg={roomType.errorMsg}
+            roomTypes={roomTypes}
+          />
+        </Form>
+      </div>
     </div>
   );
 };

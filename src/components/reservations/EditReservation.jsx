@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import Select from "../form/Select";
+import Loading from "../loading/Loading";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
@@ -146,53 +147,57 @@ const EditReservation = ({ user }) => {
   };
 
   return (
-    <div>
+    <>
       {loading ? (
         <div>
-          <h1>loading...</h1>
+          <Loading />
         </div>
       ) : (
-        <Form
-          title="Edit Reservation"
-          text="Update"
-          onSubmit={submitHandler}
-          noValidate
-        >
-          <Input
-            name="Guest Email"
-            type="email"
-            value={guestEmail.value}
-            onChange={inputHandler}
-            error={guestEmail.error}
-            errorMsg={guestEmail.errorMsg}
-          />
-          <Input
-            name="Check-in Date"
-            type="text"
-            value={checkInDate.value}
-            onChange={inputHandler}
-            error={checkInDate.error}
-            errorMsg={checkInDate.errorMsg}
-          />
-          <Input
-            name="Number of Nights"
-            type="number"
-            value={numberOfNights.value}
-            onChange={inputHandler}
-            error={numberOfNights.error}
-            errorMsg={numberOfNights.errorMsg}
-          />
-          <Select
-            name="Room Type"
-            value={roomType.value}
-            onChange={inputHandler}
-            error={roomType.error}
-            errorMsg={roomType.errorMsg}
-            roomTypes={roomTypes}
-          />
-        </Form>
+        <div className="reservation-container">
+          <div className="reservation-form-container">
+            <Form
+              title="Edit Reservation"
+              text="Update"
+              onSubmit={submitHandler}
+              noValidate
+            >
+              <Input
+                name="Guest Email"
+                type="email"
+                value={guestEmail.value}
+                onChange={inputHandler}
+                error={guestEmail.error}
+                errorMsg={guestEmail.errorMsg}
+              />
+              <Input
+                name="Check-in Date"
+                type="text"
+                value={checkInDate.value}
+                onChange={inputHandler}
+                error={checkInDate.error}
+                errorMsg={checkInDate.errorMsg}
+              />
+              <Input
+                name="Number of Nights"
+                type="number"
+                value={numberOfNights.value}
+                onChange={inputHandler}
+                error={numberOfNights.error}
+                errorMsg={numberOfNights.errorMsg}
+              />
+              <Select
+                name="Room Type"
+                value={roomType.value}
+                onChange={inputHandler}
+                error={roomType.error}
+                errorMsg={roomType.errorMsg}
+                roomTypes={roomTypes}
+              />
+            </Form>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -11,6 +11,8 @@ import { config } from "../../api/config";
 import { ROOM_TYPES } from "../../api/endpoints";
 import { isValidRoomType } from "../../utils/validation";
 
+import "./RoomTypes.css";
+
 const CreateRoomType = () => {
   const navigate = useNavigate();
 
@@ -93,37 +95,42 @@ const CreateRoomType = () => {
   };
 
   return (
-    <div className="create-container">
-      <h1>Create Room Type</h1>
-      <Form
-        title="Create Room Type"
-        text="Create"
-        onSubmit={submitHandler}
-        noValidate
-      >
-        <Input
-          name="Room Type"
-          type="text"
-          value={roomTypeInput.value}
-          error={roomTypeInput.error}
-          errorMsg={roomTypeInput.errorMsg}
-          onChange={inputHandler}
-        />
-        <TextArea
-          name="Description"
-          onChange={inputHandler}
-          value={descriptionInput}
-        />
-        <Input
-          name="Rate"
-          type="number"
-          value={rateInput.value}
-          error={rateInput.error}
-          errorMsg={rateInput.errorMsg}
-          onChange={inputHandler}
-        />
-        <CheckBox name="Active" checked={activeInput} onChange={inputHandler} />
-      </Form>
+    <div className="room-types-container">
+      <div className="room-types-form-container">
+        <Form
+          title="Create Room Type"
+          text="Create"
+          onSubmit={submitHandler}
+          noValidate
+        >
+          <Input
+            name="Room Type"
+            type="text"
+            value={roomTypeInput.value}
+            error={roomTypeInput.error}
+            errorMsg={roomTypeInput.errorMsg}
+            onChange={inputHandler}
+          />
+          <TextArea
+            name="Description"
+            onChange={inputHandler}
+            value={descriptionInput}
+          />
+          <Input
+            name="Rate"
+            type="number"
+            value={rateInput.value}
+            error={rateInput.error}
+            errorMsg={rateInput.errorMsg}
+            onChange={inputHandler}
+          />
+          <CheckBox
+            name="Active"
+            checked={activeInput}
+            onChange={inputHandler}
+          />
+        </Form>
+      </div>
     </div>
   );
 };

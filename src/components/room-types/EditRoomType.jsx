@@ -6,11 +6,14 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import TextArea from "../form/TextArea";
 import CheckBox from "../form/CheckBox";
+import Loading from "../loading/Loading";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
 import { ROOM_TYPES } from "../../api/endpoints";
 import { isValidRoomType } from "../../utils/validation";
+
+import "./RoomTypes.css";
 
 const EditRoomType = () => {
   const { id } = useParams();
@@ -126,47 +129,51 @@ const EditRoomType = () => {
   };
 
   return (
-    <div className="create-container">
+    <>
       {loading ? (
         <div>
-          <h1>loading...</h1>
+          <Loading />
         </div>
       ) : (
-        <Form
-          title="Edit Room Type"
-          text="Update"
-          onSubmit={submitHandler}
-          noValidate
-        >
-          <Input
-            name="Room Type"
-            type="text"
-            value={roomTypeInput.value}
-            error={roomTypeInput.error}
-            errorMsg={roomTypeInput.errorMsg}
-            onChange={inputHandler}
-          />
-          <TextArea
-            name="Description"
-            onChange={inputHandler}
-            value={descriptionInput}
-          />
-          <Input
-            name="Rate"
-            type="number"
-            value={rateInput.value}
-            error={rateInput.error}
-            errorMsg={rateInput.errorMsg}
-            onChange={inputHandler}
-          />
-          <CheckBox
-            name="Active"
-            checked={activeInput}
-            onChange={inputHandler}
-          />
-        </Form>
+        <div className="room-types-container">
+          <div className="room-types-form-container">
+            <Form
+              title="Edit Room Type"
+              text="Update"
+              onSubmit={submitHandler}
+              noValidate
+            >
+              <Input
+                name="Room Type"
+                type="text"
+                value={roomTypeInput.value}
+                error={roomTypeInput.error}
+                errorMsg={roomTypeInput.errorMsg}
+                onChange={inputHandler}
+              />
+              <TextArea
+                name="Description"
+                onChange={inputHandler}
+                value={descriptionInput}
+              />
+              <Input
+                name="Rate"
+                type="number"
+                value={rateInput.value}
+                error={rateInput.error}
+                errorMsg={rateInput.errorMsg}
+                onChange={inputHandler}
+              />
+              <CheckBox
+                name="Active"
+                checked={activeInput}
+                onChange={inputHandler}
+              />
+            </Form>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

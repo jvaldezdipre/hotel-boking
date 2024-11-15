@@ -1,0 +1,30 @@
+.room-types-title {
+  color: white;
+  margin-bottom: 40px;
+  margin-top: 70px;
+}
+
+.room-types-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.room-types-form-container {
+  width: 640px;
+  height: 800px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.room-types-form-container form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}

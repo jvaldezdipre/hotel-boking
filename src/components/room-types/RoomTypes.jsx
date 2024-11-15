@@ -6,6 +6,7 @@ import { ROOM_TYPES } from "../../api/endpoints";
 import { config } from "../../api/config";
 
 import RoomTypeCard from "./RoomTypeCard";
+import Loading from "../loading/Loading";
 
 const RoomTypes = () => {
   const [roomTypes, setRoomTypes] = useState([]);
@@ -34,13 +35,14 @@ const RoomTypes = () => {
   const editHandler = (id) => {
     navigate(`${ROOM_TYPES}/edit/${id}`);
   };
+
   return (
     <div className="container">
       {loading ? (
-        <p>Loading...</p>
+        <Loading />
       ) : (
         <div>
-          <h1 className="title">All Room types</h1>
+          <h1 className="room-types-title">All Room types</h1>
           <div className="create-btn-container">
             <button className="create-btn" onClick={createHandler}>
               Create

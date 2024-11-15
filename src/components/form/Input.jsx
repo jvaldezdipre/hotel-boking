@@ -9,6 +9,7 @@ const Input = (props) => {
         <label className="input-label" htmlFor={name}>
           {name}
         </label>
+        {error && <span className="err-message"> {errorMsg}</span>}
       </div>
       <input
         className={error ? "input error" : "input"}
@@ -19,7 +20,6 @@ const Input = (props) => {
         id={name}
         onChange={onChange}
       />
-      {error && <p className="err-message">{errorMsg}</p>}
     </div>
   );
 };

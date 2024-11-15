@@ -3,9 +3,10 @@ const Select = (props) => {
 
   return (
     <div className="select-container">
-      <label className="select-label" htmlFor={name}>
-        {name}
-      </label>
+      <div className="input-label-container">
+        <label htmlFor={name}>{name}</label>
+        {error && <span className="err-message"> {errorMsg}</span>}
+      </div>
       <select name={name} value={value} onChange={onChange}>
         <option value={0}>Select Room Type</option>
         {roomTypes.map(
@@ -17,7 +18,6 @@ const Select = (props) => {
             )
         )}
       </select>
-      {error && <p className="error-msg">{errorMsg}</p>}
     </div>
   );
 };

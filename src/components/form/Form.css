@@ -4,10 +4,13 @@ form {
 }
 
 form .input-container {
-  /* position: relative; */
-  height: 200px;
+  height: 100%;
   width: 100%;
-  /* margin-top: 20px; */
+}
+
+form .select-container {
+  height: 100%;
+  width: 100%;
 }
 
 form button {
@@ -56,6 +59,25 @@ form button:hover {
   border-radius: 3px;
   border: 1px solid #717171;
   transition: 0.2s ease;
+}
+
+.select-container select {
+  height: 50px;
+  width: 100%;
+}
+
+.textarea-container {
+  width: 100%;
+  text-align: left;
+}
+
+.textarea-container textarea {
+  height: 200px;
+  width: 100%;
+}
+
+.checkbox-container label {
+  margin-right: 10px;
 }
 
 .input.error {

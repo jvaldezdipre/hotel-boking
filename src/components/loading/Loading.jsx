@@ -1,5 +1,9 @@
 const Loading = () => {
-  return <div>Loading</div>;
+  return (
+    <div className="loading-container">
+      <img src="./loading.svg" alt="" />
+    </div>
+  );
 };
 
 export default Loading;

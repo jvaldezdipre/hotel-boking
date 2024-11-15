@@ -6,8 +6,8 @@ import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { config } from "../../api/config";
 
 import ReservationCard from "./ReservationCard";
-
-import "./Reservations.css";
+import Loading from "../loading/Loading";
+import "./Reservation.css";
 
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);
@@ -56,12 +56,10 @@ const Reservations = () => {
   return (
     <div className="container">
       {loading ? (
-        <div>
-          <h1>loading...</h1>
-        </div>
+        <Loading />
       ) : (
         <div>
-          <h1 className="title">All Reservations</h1>
+          <h1 className="reservations-title">All Reservations</h1>
           <div className="create-btn-container">
             <button className="create-btn" onClick={createHandler}>
               Create
