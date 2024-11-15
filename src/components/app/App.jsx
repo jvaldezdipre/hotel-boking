@@ -62,10 +62,6 @@ const App = () => {
     setLoggedIn(true);
   };
 
-  // const loadingHandler = (condition) => {
-  //   setLoading(condition);
-  // };
-
   /**
    * Handler function to set the logged in status to false and remove the token from session storage.
    */

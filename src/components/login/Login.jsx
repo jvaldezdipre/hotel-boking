@@ -69,7 +69,6 @@ const Login = ({ login }) => {
 
             setEmail("");
             setPassword("");
-            console.log("logged in!");
           }
         })
         .catch(() => {
