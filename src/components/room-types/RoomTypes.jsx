@@ -31,7 +31,6 @@ const RoomTypes = () => {
     axios
       .get(ROOM_TYPES, config())
       .then((response) => {
-        console.log("Got the room types", response.data);
         setRoomTypes(response.data);
         setLoading(false);
       })

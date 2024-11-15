@@ -7,6 +7,7 @@ import Input from "../form/Input";
 import TextArea from "../form/TextArea";
 import CheckBox from "../form/CheckBox";
 import Loading from "../loading/Loading";
+import Modal from "../modal/Modal";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
@@ -33,7 +34,7 @@ const EditRoomType = () => {
   const [loading, setLoading] = useState(true);
   const [descriptionInput, setDescriptionInput] = useState("");
   const [activeInput, setActiveInput] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [roomTypeInput, setRoomTypeInput] = useState({
     value: "",
     error: false,
@@ -69,10 +70,9 @@ const EditRoomType = () => {
           setActiveInput(roomType.active);
           setLoading(false);
         })
-        .catch((error) => {
+        .catch(() => {
           setLoading(false);
-          // TODO: Handle error
-          console.log("Error fetching room type", error);
+          setIsModalOpen(true);
         });
     };
     getData();
@@ -147,11 +147,14 @@ const EditRoomType = () => {
           setActiveInput(false);
           setDescriptionInput("");
         })
-        .catch((error) => {
-          // TODO: Handle error
-          console.log("Error updating room type", error);
+        .catch(() => {
+          setIsModalOpen(true);
         });
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -163,6 +166,7 @@ const EditRoomType = () => {
       ) : (
         <div className="room-types-container">
           <div className="room-types-form-container">
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
             <Form
               title="Edit Room Type"
               text="Update"

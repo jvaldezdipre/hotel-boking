@@ -88,7 +88,6 @@ const CreateRoomType = () => {
 
     // If no form errors are found, create the room type
     if (!formError) {
-      console.log("Form is valid");
       axios
         .post(
           ROOM_TYPES,
@@ -100,8 +99,7 @@ const CreateRoomType = () => {
           },
           config()
         )
-        .then((response) => {
-          console.log("Created new room type", response.data);
+        .then(() => {
           navigate("/room-types");
           setRoomTypeInput((prev) => ({ ...prev, error: false }));
           setRateInput((prev) => ({ ...prev, error: false }));

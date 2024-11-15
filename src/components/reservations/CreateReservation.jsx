@@ -54,9 +54,14 @@ const CreateReservation = ({ user }) => {
    * Retrieves the room types from the API and sets it to the room types state.
    */
   useEffect(() => {
-    axios.get(ROOM_TYPES, config()).then((response) => {
-      setRoomTypes(response.data);
-    });
+    axios
+      .get(ROOM_TYPES, config())
+      .then((response) => {
+        setRoomTypes(response.data);
+      })
+      .catch(() => {
+        setIsModalOpen(true);
+      });
   }, []);
 
   /**

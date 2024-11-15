@@ -167,8 +167,7 @@ const EditReservation = ({ user }) => {
           },
           config()
         )
-        .then((response) => {
-          console.log("Updated reservation", response.data);
+        .then(() => {
           navigate("/reservations");
           setGuestEmail((prev) => ({ ...prev, error: false }));
           setCheckInDate((prev) => ({ ...prev, error: false }));
