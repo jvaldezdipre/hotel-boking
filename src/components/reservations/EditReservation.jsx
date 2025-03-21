@@ -6,9 +6,10 @@ import Input from "../form/Input";
 import Select from "../form/Select";
 import Loading from "../loading/Loading";
 import Modal from "../modal/Modal";
-import axios from "../../api/axios";
 
+import axios from "../../api/axios";
 import { config } from "../../api/config";
+
 import { RESERVATIONS, ROOM_TYPES } from "../../api/endpoints";
 import { isValidEmail, isValidDate } from "../../utils/validation";
 import { useNavigate } from "react-router-dom";
