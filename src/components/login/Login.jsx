@@ -24,6 +24,7 @@ const Login = ({ login }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
 
   /**
    * Handler function to update the email or password state using the input field name.
@@ -81,8 +82,31 @@ const Login = ({ login }) => {
     setIsModalOpen(false);
   };
 
+  const toggleHint = () => {
+    setShowHint(!showHint);
+  };
+
   return (
     <div className="login">
+      <div className="hint-container">
+        <button className="hint-button" onClick={toggleHint}>
+          💡 Login Hint
+        </button>
+        {showHint && (
+          <div className="credentials-hint">
+            <p>
+              <strong>Manager:</strong>
+            </p>
+            <p>Email: manager@hotelapi.com</p>
+            <p>Password: password</p>
+            <p>
+              <strong>Employee:</strong>
+            </p>
+            <p>Email: employee@hotelapi.com</p>
+            <p>Password: password</p>
+          </div>
+        )}
+      </div>
       <Modal isOpen={isModalOpen} onClose={closeModal} />
       <div className="login-container">
         <div className="login-image">
