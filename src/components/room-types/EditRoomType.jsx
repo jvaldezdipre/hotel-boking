@@ -32,6 +32,7 @@ const EditRoomType = () => {
    * rate input, active input, and loading state.
    */
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [descriptionInput, setDescriptionInput] = useState("");
   const [activeInput, setActiveInput] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,6 +54,7 @@ const EditRoomType = () => {
    */
   useEffect(() => {
     const getData = () => {
+      setLoading(true);
       axios
         .get(`${ROOM_TYPES}/${id}`, config())
         .then((response) => {
@@ -126,8 +128,7 @@ const EditRoomType = () => {
 
     // If no form errors are found, update the room type
     if (!formError) {
-      console.log("Form is valid");
-      navigate("/room-types");
+      setIsSubmitting(true);
       axios
         .put(
           `${ROOM_TYPES}/${id}`,
@@ -149,6 +150,9 @@ const EditRoomType = () => {
         })
         .catch(() => {
           setIsModalOpen(true);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
         });
     }
   };
@@ -157,53 +161,53 @@ const EditRoomType = () => {
     setIsModalOpen(false);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (isSubmitting) {
+    return <Loading />;
+  }
+
   return (
-    <>
-      {loading ? (
-        <div>
-          <Loading />
-        </div>
-      ) : (
-        <div className="room-types-container">
-          <div className="room-types-form-container">
-            <Modal isOpen={isModalOpen} onClose={closeModal} />
-            <Form
-              title="Edit Room Type"
-              text="Update"
-              onSubmit={submitHandler}
-              noValidate
-            >
-              <Input
-                name="Room Type"
-                type="text"
-                value={roomTypeInput.value}
-                error={roomTypeInput.error}
-                errorMsg={roomTypeInput.errorMsg}
-                onChange={inputHandler}
-              />
-              <TextArea
-                name="Description"
-                onChange={inputHandler}
-                value={descriptionInput}
-              />
-              <Input
-                name="Rate"
-                type="number"
-                value={rateInput.value}
-                error={rateInput.error}
-                errorMsg={rateInput.errorMsg}
-                onChange={inputHandler}
-              />
-              <CheckBox
-                name="Active"
-                checked={activeInput}
-                onChange={inputHandler}
-              />
-            </Form>
-          </div>
-        </div>
-      )}
-    </>
+    <div className="room-types-container">
+      <div className="room-types-form-container">
+        <Modal isOpen={isModalOpen} onClose={closeModal} />
+        <Form
+          title="Edit Room Type"
+          text="Update"
+          onSubmit={submitHandler}
+          noValidate
+        >
+          <Input
+            name="Room Type"
+            type="text"
+            value={roomTypeInput.value}
+            error={roomTypeInput.error}
+            errorMsg={roomTypeInput.errorMsg}
+            onChange={inputHandler}
+          />
+          <TextArea
+            name="Description"
+            onChange={inputHandler}
+            value={descriptionInput}
+          />
+          <Input
+            name="Rate"
+            type="number"
+            value={rateInput.value}
+            error={rateInput.error}
+            errorMsg={rateInput.errorMsg}
+            onChange={inputHandler}
+          />
+          <CheckBox
+            name="Active"
+            checked={activeInput}
+            onChange={inputHandler}
+          />
+        </Form>
+      </div>
+    </div>
   );
 };
 

@@ -32,7 +32,8 @@ const EditReservation = ({ user }) => {
    * check-in date, number of nights, room type and loading state and modal state.
    */
   const [roomTypes, setRoomTypes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestEmail, setGuestEmail] = useState({
     value: "",
@@ -64,6 +65,7 @@ const EditReservation = ({ user }) => {
    */
   useEffect(() => {
     const getData = () => {
+      setLoading(true);
       Promise.all([
         axios.get(`${RESERVATIONS}/${id}`, config()),
         axios.get(ROOM_TYPES, config()),
@@ -155,6 +157,7 @@ const EditReservation = ({ user }) => {
 
     // If no form errors are found, update the reservation
     if (!formError) {
+      setIsSubmitting(true);
       axios
         .put(
           `${RESERVATIONS}/${id}`,
@@ -177,6 +180,9 @@ const EditReservation = ({ user }) => {
         })
         .catch(() => {
           setIsModalOpen(true);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
         });
     }
   };
@@ -185,59 +191,59 @@ const EditReservation = ({ user }) => {
     setIsModalOpen(false);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (isSubmitting) {
+    return <Loading />;
+  }
+
   return (
-    <>
-      {loading ? (
-        <div>
-          <Loading />
-        </div>
-      ) : (
-        <div className="reservation-container">
-          <Modal isOpen={isModalOpen} onClose={closeModal} />
-          <div className="reservation-form-container">
-            <Form
-              title="Edit Reservation"
-              text="Update"
-              onSubmit={submitHandler}
-              noValidate
-            >
-              <Input
-                name="Guest Email"
-                type="email"
-                value={guestEmail.value}
-                onChange={inputHandler}
-                error={guestEmail.error}
-                errorMsg={guestEmail.errorMsg}
-              />
-              <Input
-                name="Check-in Date"
-                type="text"
-                value={checkInDate.value}
-                onChange={inputHandler}
-                error={checkInDate.error}
-                errorMsg={checkInDate.errorMsg}
-              />
-              <Input
-                name="Number of Nights"
-                type="number"
-                value={numberOfNights.value}
-                onChange={inputHandler}
-                error={numberOfNights.error}
-                errorMsg={numberOfNights.errorMsg}
-              />
-              <Select
-                name="Room Type"
-                value={roomType.value}
-                onChange={inputHandler}
-                error={roomType.error}
-                errorMsg={roomType.errorMsg}
-                roomTypes={roomTypes}
-              />
-            </Form>
-          </div>
-        </div>
-      )}
-    </>
+    <div className="reservation-container">
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
+      <div className="reservation-form-container">
+        <Form
+          title="Edit Reservation"
+          text="Update"
+          onSubmit={submitHandler}
+          noValidate
+        >
+          <Input
+            name="Guest Email"
+            type="email"
+            value={guestEmail.value}
+            onChange={inputHandler}
+            error={guestEmail.error}
+            errorMsg={guestEmail.errorMsg}
+          />
+          <Input
+            name="Check-in Date"
+            type="text"
+            value={checkInDate.value}
+            onChange={inputHandler}
+            error={checkInDate.error}
+            errorMsg={checkInDate.errorMsg}
+          />
+          <Input
+            name="Number of Nights"
+            type="number"
+            value={numberOfNights.value}
+            onChange={inputHandler}
+            error={numberOfNights.error}
+            errorMsg={numberOfNights.errorMsg}
+          />
+          <Select
+            name="Room Type"
+            value={roomType.value}
+            onChange={inputHandler}
+            error={roomType.error}
+            errorMsg={roomType.errorMsg}
+            roomTypes={roomTypes}
+          />
+        </Form>
+      </div>
+    </div>
   );
 };
 

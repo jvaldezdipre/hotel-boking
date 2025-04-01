@@ -4,6 +4,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import Select from "../form/Select";
 import Modal from "../modal/Modal";
+import Loading from "../loading/Loading";
 import axios from "../../api/axios";
 
 import { config } from "../../api/config";
@@ -26,6 +27,8 @@ const CreateReservation = ({ user }) => {
    */
   const [roomTypes, setRoomTypes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [guestEmailInput, setGuestEmailInput] = useState({
     value: "",
     error: false,
@@ -54,13 +57,16 @@ const CreateReservation = ({ user }) => {
    * Retrieves the room types from the API and sets it to the room types state.
    */
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(ROOM_TYPES, config())
       .then((response) => {
         setRoomTypes(response.data);
+        setIsLoading(false);
       })
       .catch(() => {
         setIsModalOpen(true);
+        setIsLoading(false);
       });
   }, []);
 
@@ -133,6 +139,7 @@ const CreateReservation = ({ user }) => {
 
     // If no form errors are found, create the reservation
     if (!formError) {
+      setIsSubmitting(true);
       axios
         .post(
           RESERVATIONS,
@@ -154,6 +161,9 @@ const CreateReservation = ({ user }) => {
         })
         .catch(() => {
           setIsModalOpen(true);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
         });
     }
   };
@@ -161,6 +171,14 @@ const CreateReservation = ({ user }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isSubmitting) {
+    return <Loading />;
+  }
 
   return (
     <div className="reservation-container">

@@ -8,6 +8,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import axios from "../../api/axios";
 import Modal from "../modal/Modal";
+import Loading from "../loading/Loading";
 import "./Login.css";
 
 /**
@@ -25,6 +26,7 @@ const Login = ({ login }) => {
   const [error, setError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Handler function to update the email or password state using the input field name.
@@ -58,6 +60,7 @@ const Login = ({ login }) => {
     }
 
     if (!formError) {
+      setIsLoading(true);
       axios
         .post(LOGIN_URL, { email, password })
         .then((response) => {
@@ -74,6 +77,9 @@ const Login = ({ login }) => {
         })
         .catch(() => {
           setIsModalOpen(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -85,6 +91,10 @@ const Login = ({ login }) => {
   const toggleHint = () => {
     setShowHint(!showHint);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="login">

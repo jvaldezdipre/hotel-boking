@@ -7,6 +7,7 @@ import TextArea from "../form/TextArea";
 import CheckBox from "../form/CheckBox";
 import axios from "../../api/axios";
 import Modal from "../modal/Modal";
+import Loading from "../loading/Loading";
 
 import { config } from "../../api/config";
 import { ROOM_TYPES } from "../../api/endpoints";
@@ -28,6 +29,7 @@ const CreateRoomType = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [descriptionInput, setDescriptionInput] = useState("");
   const [activeInput, setActiveInput] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [roomTypeInput, setRoomTypeInput] = useState({
     value: "",
@@ -88,6 +90,7 @@ const CreateRoomType = () => {
 
     // If no form errors are found, create the room type
     if (!formError) {
+      setIsLoading(true);
       axios
         .post(
           ROOM_TYPES,
@@ -108,6 +111,9 @@ const CreateRoomType = () => {
         })
         .catch(() => {
           setIsModalOpen(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -115,6 +121,10 @@ const CreateRoomType = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="room-types-container">
